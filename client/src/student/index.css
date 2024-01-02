@@ -1,0 +1,8 @@
+/* tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    margin-top: 80px;
+}
