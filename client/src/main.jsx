@@ -13,6 +13,7 @@ import History from './student/pages/History.jsx'
 import LayoutT from './teacher/components/Layout.jsx'
 import CalendarT from './teacher/pages/Calendar.jsx'
 import ListStudent from './teacher/pages/ListStudent.jsx'
+import ProfileT from './teacher/pages/Profile.jsx'
 
 import Dashboard from './admin/pages/Dashboard.jsx'
 import LayoutA from './admin/components/Layout.jsx'
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: "liststudent",
         element: <ListStudent />,
+      },
+      {
+        path: "profile",
+        element: <ProfileT />,
       },
     ]
   },
