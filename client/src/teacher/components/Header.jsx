@@ -47,7 +47,7 @@ export default function Header() {
         </div>
       </div>
 
-      <ul className={`md:flex transition-all duration-300 ${isMenuOpen ? 'block' : 'hidden'} gap-4 mt-4 md:mt-0 item-center pr-10`}>
+      <ul className={`md:flex transition-all duration-300 ${isMenuOpen ? 'block' : 'hidden'} gap-4 mt-4 md:mt-3 item-center  pr-10`}>
 
           <li>asas</li>
           <li>asas</li>
