@@ -48,8 +48,8 @@ const ProductTable = () => {
     const visibleItems = filteredItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-      <div className="mb-10">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white p-4">
+      <div className="mb-10 container mx-auto px-10">
+        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4">
 
           <div>รายชื่อนักศึกษา</div>
           <div className="flex justify-between">
@@ -87,7 +87,7 @@ const ProductTable = () => {
             </div>
 
 
-            <div className="relative mt-1 pb-4">
+            <div className=" mt-1 pb-4">
               <select
                 value={itemsPerPage}
                 onChange={(e) => {
@@ -103,57 +103,46 @@ const ProductTable = () => {
             </div>
           </div>
 
-
+     
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             {/* ... ส่วนหัวตาราง ... */}
-            <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="p-4">
-                  {/* <div className="flex items-center">
-                  <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label htmlFor="checkbox-all-search" className="sr-only">
-                    checkbox
-                  </label>
-                </div>*/}
-                </th>
-                <th scope="col" className="px-6 py-3 w-44">
+            <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 flex w-full">
+              <tr className="flex w-full">
+                
+                <th scope="col" className="px-6 py-3 w-1/5">
                   รหัสนักศึกษา
                 </th>
-                <th scope="col" className="px-6 py-3 w-44">
+                <th scope="col" className="px-6 py-3 w-1/5">
                   ชื่อ
                 </th>
-                <th scope="col" className="px-6 py-3 w-44">
+                <th scope="col" className="px-6 py-3 w-1/5">
                   นามสกุล
                 </th>
-                <th scope="col" className="px-6 py-3 w-44">
+                <th scope="col" className="px-6 py-3 w-1/5">
                   หมู่เรียน
                 </th>
-                <th scope="col" className="px-6 py-3 w-44">
+                <th scope="col" className="px-6 py-3 w-1/5">
                   ดูเพิ่มเติม
                 </th>
               </tr>
             </thead>
-            <tbody className="text-slate-600">
+            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{height:'50vh'}}>
               {visibleItems.map((item) => (
-                <tr key={item.username} className="border-b-2">
-                  <td></td>
-                  <td scope="col" className="px-6 py-3">
+                <tr key={item.username} className="border-b-2 flex w-full ">
+               
+                  <td scope="col" className="px-6 py-3 w-1/5">
                     {item.username}
                   </td>
-                  <td scope="col" className="px-6 py-3">
+                  <td scope="col" className="px-6 py-3 w-1/5">
                     {item.fname}
                   </td>
-                  <td scope="col" className="px-6 py-3">
+                  <td scope="col" className="px-6 py-3 w-1/5">
                     {item.lname}
                   </td>
-                  <td scope="col" className="px-6 py-3">
+                  <td scope="col" className="px-6 py-3 w-1/5">
                     {item.section}
                   </td>
-                  <td scope="col" className="px-6 py-3">
+                  <td scope="col" className="px-6 py-3 w-1/5">
                     เพิ่มเติม
                   </td>
                 </tr>

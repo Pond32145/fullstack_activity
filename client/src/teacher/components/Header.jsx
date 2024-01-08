@@ -47,11 +47,22 @@ export default function Header() {
         </div>
       </div>
 
-      <ul className={`md:flex transition-all duration-300 ${isMenuOpen ? 'block' : 'hidden'} gap-4 mt-4 md:mt-3 item-center  pr-10`}>
+      <ul className={`md:flex transition-all duration-300 ${isMenuOpen ? 'block' : 'hidden'} gap-4 mt-4 md:mt-1 item-center  pr-10`}>
 
-          <li>asas</li>
-          <li>asas</li>
-          <li>asas</li>
+        <li>
+          <Link
+            to='/teacher/profile' className="flex items-center p-2 space-x-3 rounded-md">
+            <span>โปรไฟล์</span>
+          </Link>
+        </li>
+        <li>
+          <Link
+            to='/teacher/liststudent' className="flex items-center p-2 space-x-3 rounded-md">
+            <span>รายชื่อนักศึกษา</span>
+          </Link>
+        </li>
+        
+        <li>asas</li>
 
       </ul>
     </header>
