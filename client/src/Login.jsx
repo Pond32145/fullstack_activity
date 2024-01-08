@@ -26,7 +26,7 @@ export default function SignInSide() {
           if (data.role === 'admin') {
             window.location = '/admin/dashboard'; // Redirect to admin dashboard
           } else if (data.role === 'teacher') {
-            window.location = '/teacher'; // Redirect to teacher dashboard
+            window.location = '/teacher/calendar'; // Redirect to teacher dashboard
           } else {
             window.location = '/activity/home'; // Redirect to user dashboard
           }

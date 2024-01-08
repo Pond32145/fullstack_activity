@@ -14,7 +14,7 @@ const ProductTable = () => {
       .then(
         (result) => {
           setIsLoaded(true);
-          // กรองข้อมูลที่มี role เป็น "student" หรือ "admin" เท่านั้น
+          // กรองข้อมูลที่มี role เป็น "student" เท่านั้น
           const filteredItems = result.filter((item) => item.role === "student");
           setItems(filteredItems);
         },
@@ -48,10 +48,10 @@ const ProductTable = () => {
     const visibleItems = filteredItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-      <div className="mb-10 container mx-auto px-10">
+      <div className="mb-10 container mx-auto md:px-20">
         <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4">
 
-          <div>รายชื่อนักศึกษา</div>
+          <div className="text-lg font-bold mb-2">รายชื่อนักศึกษา</div>
           <div className="flex justify-between">
             <div className="pb-4 items-center">
               <label htmlFor="table-search" className="sr-only">

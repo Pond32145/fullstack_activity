@@ -1,15 +1,16 @@
-// import Footer from "./Footer"
-// import Sidebar from "./Sidebar"
-import Header from "./Header"
+// import Header from "./Header"
 import { Outlet } from "react-router-dom"
 import Margin from "./Margin"
+import Footer from "./Footer"
+import Navbar from "./Navbar"
 
 function Layout() {
   return (
     <main>
-    <Margin />
-    <Header />
-    <Outlet />
+      <Navbar />
+      <Margin />
+      <Outlet />
+      <Footer />
     </main>
   )
 }
