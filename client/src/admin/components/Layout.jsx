@@ -1,12 +1,16 @@
-
+// import Header from "./Header"
 import { Outlet } from "react-router-dom"
+import Margin from "./Margin"
+import Footer from "./Footer"
+import Navbar from "./Navbar"
 
 function Layout() {
   return (
     <main>
-        <h1>kcoavmopd</h1>
+      <Navbar />
+      <Margin />
       <Outlet />
-
+      <Footer />
     </main>
   )
 }

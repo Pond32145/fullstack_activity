@@ -10,11 +10,11 @@ const secret = 'Fullstack-Login'
 
 app.use(cors())
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//     next();
+//   });
 
 const mysql = require('mysql2');
 // create the connection to database
@@ -128,22 +128,28 @@ app.get('/api/user', (req, res) => {
         res.json(results);
     });
 });
-app.get('/api/userO', (req, res) => {
-    const query = `SELECT * FROM user WHERE username = ?`;
 
+
+app.get('/api/userO', (req, res) => {
+    const { username } = req.query;
+    const query = 'SELECT * FROM user WHERE username = ?';
+  
     connection.query(query, [username], (err, results) => {
       if (err) {
-        console.error('เกิดข้อผิดพลาดในการดึงข้อมูล: ' + err.stack);
+        console.error('Error fetching user data:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
         return;
       }
   
       if (results.length > 0) {
-        console.log('ข้อมูลผู้ใช้:', results[0]);
+        console.log('User data:', results[0]);
+        res.json(results[0]);
       } else {
-        console.log('ไม่พบข้อมูลผู้ใช้');
+        console.log('User not found');
+        res.status(404).json({ message: 'User not found' });
       }
     });
-});
+  });
 
 // app.put('/api/user/:username', (req, res) => {
 //     const { tel, datebirth, address, district, province, postal_code } = req.body;

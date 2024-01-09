@@ -14,9 +14,11 @@ import LayoutT from './teacher/components/Layout.jsx'
 import CalendarT from './teacher/pages/Calendar.jsx'
 import ListStudent from './teacher/pages/ListStudent.jsx'
 import ProfileT from './teacher/pages/Profile.jsx'
+import Pro from './teacher/pages/Pro.jsx'
 
 import Dashboard from './admin/pages/Dashboard.jsx'
 import LayoutA from './admin/components/Layout.jsx'
+import ListUsers from './admin/pages/ListUsers.jsx'
 
 
 const router = createBrowserRouter([
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "listusers",
+        element: <ListUsers />,
       },
     ]
   },
@@ -75,6 +81,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <ProfileT />,
+      },
+      {
+        path: "pro",
+        element: <Pro />,
       },
     ]
   },
