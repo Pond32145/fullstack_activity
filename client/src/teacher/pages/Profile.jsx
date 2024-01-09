@@ -1,70 +1,169 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// StudentForm.js
 
-const UserInfo = () => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const token = localStorage.getItem('token');
-  const authToken = token;
-  const history = useNavigate();
+import { useState, useEffect } from "react";
+
+// import React from 'react';
+
+
+
+const StudentForm = () => {
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
+      // const params = 
+
       try {
-        if (!authToken) {
-          // กรณีไม่มี token ให้เด้งไปที่หน้าล็อคอิน
-          history('/');
-          return;
-        }
-
-        const response = await fetch('http://localhost:3333/api/user', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json'
-          },
-        });
-
+        const response = await fetch('http://localhost:3333/api/userO');
         if (!response.ok) {
-          // กรณีไม่สามารถดึงข้อมูลผู้ใช้ได้
-          // ให้ทำการล็อกเอาท์และเด้งไปหน้าล็อกอิน
-          localStorage.removeItem('token');
-          history.push('/');
-          return;
+          throw new Error('Network response was not ok');
         }
-
-        const data = await response.json();
-
-        if (data && data.username) {
-          setLoggedInUser(data.username);
-        } else {
-          console.error('ได้รับข้อมูลผู้ใช้ที่ไม่ถูกต้อง');
-        }
+        const result = await response.json();
+        console.log('Data from server:', result);
+        setData(result);
       } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้:', error.message);
+        // console.error('Error fetching data:', error);
       }
     };
+  
+    fetchData();
+  }, []);
+   // ว่างเพื่อให้ useEffect ทำงานเพียงครั้งเดียวหลังจากคอมโพเนนต์นี้ถูกตรงกัน
 
-    fetchUserData();
-  }, [authToken, history]);
 
-  const handleLogout = () => {
-    // ลบโทเคนและเด้งไปที่หน้าล็อกอิน
-    localStorage.removeItem('token');
-    history('/');
-  };
 
+  if (!data) {
+    return <div>Loading...</div>;
+  }
   return (
-    <div>
-      {loggedInUser ? (
-        <div>
-          <p>ผู้ใช้ที่ล็อกอิน: {loggedInUser}</p>
+    <div className="flex w-4/5 mx-auto shadow-xl rounded-lg bg-slate-100 p-5">
+      <div className=" w-1/3">
+
+      </div>
+      <div className="w-2/3 mx-auto mt-10 p-4 bg-white shadow-md rounded-md">
+        <form className="grid grid-cols-2 gap-4">
+
+          <div className="mb-4">
+            <label htmlFor="studentId" className="block text-sm font-medium text-gray-600">
+              รหัสนักศึกษา
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={data && data[0] && data[0].username ? data[0].username : ''}
+              // value={data && data.username ? data.username : ''}
+              className="mt-1 p-2 border w-full rounded-md" />
           </div>
-          ) : (
-            <p>กำลังโหลดข้อมูลผู้ใช้...</p>
-            )}
-            <button onClick={handleLogout}>ล็อกเอาท์</button>
+   
+
+          <div className="mb-4">
+            <label htmlFor="firstName" className="block text-sm font-medium text-gray-600">
+              ชื่อ
+            </label>
+            <input
+              type="text"
+              id="fname"
+              name="fname"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="lastName" className="block text-sm font-medium text-gray-600">
+              นามสกุล
+            </label>
+            <input
+              type="text"
+              id="lname"
+              name="lname"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="classGroup" className="block text-sm font-medium text-gray-600">
+              หมู่เรียน
+            </label>
+            <input
+              type="text"
+              id="section"
+              name="section"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-600">
+              เบอร์โทร
+            </label>
+            <input
+              type="tel"
+              id="tel"
+              name="tel"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="birthdate" className="block text-sm font-medium text-gray-600">
+              วันเกิด
+            </label>
+            <input
+              type="date"
+              id="birthdate"
+              name="birthdate"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="address" className="block text-sm font-medium text-gray-600">
+              ที่อยู่
+            </label>
+            <input
+              id="address"
+              name="address"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="district" className="block text-sm font-medium text-gray-600">
+              อำเภอ
+            </label>
+            <input
+              type="text"
+              id="district"
+              name="district"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="province" className="block text-sm font-medium text-gray-600">
+              จังหวัด
+            </label>
+            <input
+              type="text"
+              id="province"
+              name="province"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="zipcode" className="block text-sm font-medium text-gray-600">
+              รหัสไปรษณีย์
+            </label>
+            <input
+              type="text"
+              id="zipcode"
+              name="zipcode"
+              className="mt-1 p-2 border w-full rounded-md" />
+          </div>
+
+          <div className="flex justify-end">
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+              บันทึก
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default UserInfo;
+export default StudentForm;

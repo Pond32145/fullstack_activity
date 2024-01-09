@@ -10,6 +10,12 @@ const secret = 'Fullstack-Login'
 
 app.use(cors())
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+
 const mysql = require('mysql2');
 // create the connection to database
 const connection = mysql.createConnection({
@@ -114,6 +120,16 @@ app.post('/authen', jsonParser, function (req, res, next) {
 
 app.get('/api/user', (req, res) => {
     connection.query('SELECT * FROM user', (err, results) => {
+        if (err) {
+            console.error('Error querying MySQL:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
+    });
+});
+app.get('/api/userO', (req, res) => {
+    connection.query('SELECT * FROM user WHERE username = ?', [req.query.username], (err, results) => {
         if (err) {
             console.error('Error querying MySQL:', err);
             res.status(500).send('Internal Server Error');
