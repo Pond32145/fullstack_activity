@@ -129,35 +129,41 @@ app.get('/api/user', (req, res) => {
     });
 });
 app.get('/api/userO', (req, res) => {
-    connection.query('SELECT * FROM user WHERE username = ?', [req.query.username], (err, results) => {
-        if (err) {
-            console.error('Error querying MySQL:', err);
-            res.status(500).send('Internal Server Error');
-            return;
-        }
-        res.json(results);
+    const query = `SELECT * FROM user WHERE username = ?`;
+
+    connection.query(query, [username], (err, results) => {
+      if (err) {
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูล: ' + err.stack);
+        return;
+      }
+  
+      if (results.length > 0) {
+        console.log('ข้อมูลผู้ใช้:', results[0]);
+      } else {
+        console.log('ไม่พบข้อมูลผู้ใช้');
+      }
     });
 });
 
-app.put('/api/user/:username', (req, res) => {
-    const { tel, datebirth, address, district, province, postal_code } = req.body;
-    const { username } = req.params;
+// app.put('/api/user/:username', (req, res) => {
+//     const { tel, datebirth, address, district, province, postal_code } = req.body;
+//     const { username } = req.params;
   
-    const sql = `
-      UPDATE user
-      SET tel = ?, datebirth = ?, address = ?, district = ?, province = ?, postal_code = ?
-      WHERE username = ?
-    `;
+//     const sql = `
+//       UPDATE user
+//       SET tel = ?, datebirth = ?, address = ?, district = ?, province = ?, postal_code = ?
+//       WHERE username = ?
+//     `;
   
-    connection.query(sql, [tel, datebirth, address, district, province, postal_code, username], (err, results) => {
-      if (err) {
-        console.error('Error querying MySQL:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
-        return;
-      }
-      res.json({ success: true, message: 'User updated successfully' });
-    });
-  });
+//     connection.query(sql, [tel, datebirth, address, district, province, postal_code, username], (err, results) => {
+//       if (err) {
+//         console.error('Error querying MySQL:', err);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//         return;
+//       }
+//       res.json({ success: true, message: 'User updated successfully' });
+//     });
+//   });
   
 
 app.listen(3333, jsonParser, function () {

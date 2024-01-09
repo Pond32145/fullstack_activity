@@ -7,32 +7,33 @@ import { useState, useEffect } from "react";
 
 
 const StudentForm = () => {
-  const [data, setData] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      // const params = 
+    // กำหนด URL ของ API ที่สร้างด้วย Node.js
+    const apiUrl = 'http://localhost:3333/api/user';  // ปรับ URL ตามที่คุณใช้
 
-      try {
-        const response = await fetch('http://localhost:3333/api/userO');
+    // ทำ HTTP request ด้วย fetch
+    fetch(apiUrl)
+      .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
         }
-        const result = await response.json();
-        console.log('Data from server:', result);
-        setData(result);
-      } catch (error) {
-        // console.error('Error fetching data:', error);
-      }
-    };
-  
-    fetchData();
+        return response.json();
+      })
+      .then(data => {
+        console.log(data)
+        setUserData(data);
+      })
+      .catch(error => {
+        console.error('เกิดข้อผิดพลาด: ', error);
+      });
   }, []);
    // ว่างเพื่อให้ useEffect ทำงานเพียงครั้งเดียวหลังจากคอมโพเนนต์นี้ถูกตรงกัน
 
 
 
-  if (!data) {
+  if (!userData) {
     return <div>Loading...</div>;
   }
   return (
@@ -51,8 +52,8 @@ const StudentForm = () => {
               type="text"
               id="username"
               name="username"
-              value={data && data[0] && data[0].username ? data[0].username : ''}
-              // value={data && data.username ? data.username : ''}
+              // value={data && data[0] && data[0].username ? data[0].username : ''}
+              value={userData.username}
               className="mt-1 p-2 border w-full rounded-md" />
           </div>
    
