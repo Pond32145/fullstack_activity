@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400&display=swap');
 /* tailwind.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;500&family=Prompt:ital,wght@0,200;0,400;0,500;1,400&display=swap');
- *{
-    font-family: 'Kanit', sans-serif;
-
- }
+* {
+   font-family: 'Kanit', sans-serif;
+}
+body {
+         --tw-bg-opacity: 1;
+      background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}

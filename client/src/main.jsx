@@ -18,7 +18,11 @@ import Pro from './teacher/pages/Pro.jsx'
 
 import Dashboard from './admin/pages/Dashboard.jsx'
 import LayoutA from './admin/components/Layout.jsx'
-import ListUsers from './admin/pages/ListUsers.jsx'
+import ListUsers from './admin/components/ListUsers.jsx'
+import CalendarA from './admin/pages/Calendar.jsx'
+import Add_Activity from './admin/pages/Add_activity.jsx'
+import Add_Users from './admin/components/Add_users.jsx'
+
 
 
 const router = createBrowserRouter([
@@ -35,9 +39,22 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
+        path: "calendar",
+        element: <CalendarA />,
+      },
+      {
         path: "listusers",
         element: <ListUsers />,
       },
+      {
+        path: "addactivity",
+        element: <Add_Activity />,
+      },
+      {
+        path: "addusers",
+        element: <Add_Users />,
+      },
+
     ]
   },
   {

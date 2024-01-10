@@ -1,10 +1,15 @@
- import Login from './Login'
+import Login from './pages/Login'
+
+// import Loading from './components/Loading'
 
 function App() {
 
 
   return (
+    <>
       <Login />
+    
+    </>
   )
 }
 

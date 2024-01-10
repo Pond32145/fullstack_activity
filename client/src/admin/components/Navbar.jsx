@@ -29,18 +29,19 @@ const NavBar = () => {
                 <nav className="flex justify-between">
                     <div className="flex items-center space-x-3 lg:pr-16 pr-6">
                         <img src={Logo} className='w-10' alt='IT Logo' />
-                        <h2 className="font-bold text-md  leading-6 text-gray-800">INFORMATION  TECHNOLOGY</h2>
+                        <h2 className="font-bold text-md  leading-6 text-gray-800">ADMIN Dashboard</h2>
                     </div>
                     <ul className="hidden md:flex flex-auto space-x-2 items-center justify-center">
-                        <Link to='/teacher/calendar'>
-                            <li onClick={() => handleItemClick('Calendar')}
-                                className={getItemClass('Calendar')}>ปฏิทินกิจกรรม</li>
-                        </Link>
+                    <Link to='/admin/dashboard'>
+                        <li onClick={() => handleItemClick('Dashboard')}
+                            className={getItemClass('Dashboard')}>Dashboard</li>
+                    </Link>
+                    <Link to='/admin/calendar'>
+                        <li onClick={() => handleItemClick('Calendar')}
+                            className={getItemClass('Calendar')}>ปฏิทินกิจกรรม</li>
+                    </Link>
 
-                        <Link to='/admin/listusers'>
-                            <li onClick={() => handleItemClick('listStudent')}
-                                className={getItemClass('listStudent')}>รายชื่อผู้ใช้งานระบบ</li>
-                        </Link>
+                       
 
                         <Link to='/teacher/profile'>
                             <li onClick={() => handleItemClick('Profile')}
@@ -81,15 +82,16 @@ const NavBar = () => {
 
                     <div className="relative">
                     <ul id="list" className={`relative font-normal text-base leading-4 top-2 w-full rounded shadow-md transition-all duration-700 ${isListVisible ? 'opacity-100 max-h-40' : 'opacity-0 max-h-0 hidden'}`}>
-                            <Link to='/teacher/calendar'>
+                            <Link to='/admin/dashboard'>
+                                <li onClick={() => handleItemClick('Dashboard')}
+                                    className={getItemClassXs('Dashboard')}>Dashboard</li>
+                            </Link>
+                            <Link to='/admin/calendar'>
                                 <li onClick={() => handleItemClick('ปฏิทินกิจกรรม')}
                                     className={getItemClassXs('Calendar')}>ปฏิทินกิจกรรม</li>
                             </Link>
-                            <Link to='/teacher/liststudent'>
-                                <li onClick={() => handleItemClick('รายชื่อนักศึกษา')}
-                                    className={getItemClassXs('listStudent')}>รายชื่อนักศึกษา</li>
-                            </Link>
-                            <Link to='/teacher/profile'>
+                       
+                            <Link to='/admin/profile'>
                                 <li onClick={() => handleItemClick('ประวัติส่วนตัว')}
                                     className={getItemClassXs('Profile')}>ประวัติส่วนตัว</li>
                             </Link>

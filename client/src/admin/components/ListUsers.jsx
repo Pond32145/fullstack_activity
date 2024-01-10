@@ -7,6 +7,8 @@ const ProductTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(15); // จำนวนรายการต่อหน้า
   const [currentPage, setCurrentPage] = useState(0);
+  
+
 
   useEffect(() => {
     fetch("http://localhost:3333/api/user")
@@ -15,7 +17,7 @@ const ProductTable = () => {
         (result) => {
           setIsLoaded(true);
           // กรองข้อมูลที่มี role เป็น "student" เท่านั้น
-        //   const filteredItems = result.filter((item) => item.role === "student");
+          //   const filteredItems = result.filter((item) => item.role === "student");
           setItems(result);
         },
         (error) => {
@@ -86,6 +88,7 @@ const ProductTable = () => {
               </div>
             </div>
 
+            
 
             <div className=" mt-1 pb-4">
               <select
@@ -103,12 +106,12 @@ const ProductTable = () => {
             </div>
           </div>
 
-     
+
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             {/* ... ส่วนหัวตาราง ... */}
             <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 flex w-full">
               <tr className="flex w-full">
-                
+
                 <th scope="col" className="px-6 py-3 w-1/6">
                   รหัสนักศึกษา
                 </th>
@@ -129,10 +132,10 @@ const ProductTable = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{height:'50vh'}}>
+            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{ height: '50vh' }}>
               {visibleItems.map((item) => (
                 <tr key={item.username} className="border-b-2 flex w-full ">
-               
+
                   <td scope="col" className="px-6 py-3 w-1/6">
                     {item.username}
                   </td>
