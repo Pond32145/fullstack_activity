@@ -44,10 +44,12 @@ const Add_Users = () => {
  
   };
 
+  
+
   return (
-    <div className="flex justify-center items-center  bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md grid grid-cols-2 gap-2">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800 col-span-2">เพิ่มข้อมูล</h2>
+    <div className="flex justify-center items-center  bg-gray-100 rounded-lg ">
+      <form onSubmit={handleSubmit} className="p-8 rounded shadow-md grid grid-cols-2 gap-2">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800 col-span-2 text-center">เพิ่มผู้ใช้</h2>
 
         <div className="mb-4">
           <label htmlFor="username" className="block text-sm font-medium text-gray-600">Username</label>
@@ -56,7 +58,7 @@ const Add_Users = () => {
             id="username"
             name="username"
           
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
 
@@ -67,7 +69,7 @@ const Add_Users = () => {
             id="password"
             name="password"
    
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
 
@@ -78,7 +80,7 @@ const Add_Users = () => {
             id="fname"
             name="fname"
 
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
 
@@ -89,7 +91,7 @@ const Add_Users = () => {
             id="lname"
             name="lname"
 
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
 
@@ -100,17 +102,19 @@ const Add_Users = () => {
             id="section"
             name="section"
 
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
 
      
-
-        <div className="mt-6">
-          <button type="submit" className=" w-full p-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring focus:border-purple-300">
+<div></div>
+        <div className="text-right">
+          <button type="submit" className=" w-fit p-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring focus:border-purple-300">
             เพิ่มข้อมูล
           </button>
         </div>
+        
+        
       </form>
     </div>
   );

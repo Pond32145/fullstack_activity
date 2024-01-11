@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+
+import Popup from './Popup_addUser';
 
 function Dash_users() {
   const [items, setItems] = useState([]);
@@ -31,10 +32,10 @@ function Dash_users() {
           setCountTeacherRoles(countRolesTeacher);
           console.log(`มี role เป็น "teacher" ทั้งหมด: ${countRolesTeacher}`);
 
-          // นับจำนวนข้อมูลที่มี role เป็น "teacher"
+          // นับจำนวนข้อมูลที่มี role เป็น "admin"
           const countRolesAdmin = filteredItemsAdmin.length;
           setCountAdminRoles(countRolesAdmin);
-          console.log(`มี role เป็น "teacher" ทั้งหมด: ${countRolesAdmin}`);
+          console.log(`มี role เป็น "admin" ทั้งหมด: ${countRolesAdmin}`);
 
           // ตั้งค่า state ด้วยข้อมูลทั้งหมด
           setItems(result);
@@ -53,18 +54,10 @@ function Dash_users() {
         {isLoaded ? (
 
           <div>
+          
             <div className='flex justify-between items-center'>
               <h2 className='text-xl font-bold'>การจัดการผู้ใช้งาน</h2>
-
-              <Link to='/admin/addusers'>
-                <div className='flex gap-2 hover:text-black hover:bg-gray-200 p-2 rounded text-gray-500 text-sm items-center'>
-                  เพิ่มผู้ใช้งานระบบ
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                  </svg>
-                </div>
-              </Link>
-
+              <Popup />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pr-2 pl-2 pt-3">

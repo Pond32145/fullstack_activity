@@ -43,9 +43,9 @@ const NavBar = () => {
 
                        
 
-                        <Link to='/teacher/profile'>
+                        <Link to='/admin/addactivity'>
                             <li onClick={() => handleItemClick('Profile')}
-                                className={getItemClass('Profile')}>ประวัติส่วนตัว</li>
+                                className={getItemClass('Profile')}>กิจกรรม</li>
                         </Link>
 
                         <li onClick={() => handleItemClick('Logout')} className={getItemLogout('Logout')}>Logout</li>

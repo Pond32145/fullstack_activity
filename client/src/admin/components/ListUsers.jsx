@@ -7,7 +7,18 @@ const ProductTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(15); // จำนวนรายการต่อหน้า
   const [currentPage, setCurrentPage] = useState(0);
-  
+
+  const [visibleStartPage, setVisibleStartPage] = useState(0);
+
+
+
+
+  const updateVisibleStartPage = (newCurrentPage) => {
+    const newVisibleStartPage = Math.floor(newCurrentPage / 4) * 4;
+    setVisibleStartPage(newVisibleStartPage);
+  };
+
+
 
 
   useEffect(() => {
@@ -51,7 +62,7 @@ const ProductTable = () => {
 
     return (
       <div className="mb-10 container mx-auto md:px-20">
-        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4">
+        <div className="shadow-md sm:rounded-lg bg-white p-4 w-full">
 
           <div className="text-lg font-bold mb-2">รายชื่อผู้ใช้งานระบบ</div>
           <div className="flex justify-between">
@@ -81,14 +92,14 @@ const ProductTable = () => {
                   type="text"
                   id="table-search"
                   className="pb-2 block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for student"
+                  placeholder="ค้นหาผู้ใช้งาน"
                   value={searchTerm}
                   onChange={handleSearch}
                 />
               </div>
             </div>
 
-            
+
 
             <div className=" mt-1 pb-4">
               <select
@@ -160,59 +171,69 @@ const ProductTable = () => {
           </table>
 
           <div className="flex items-center justify-between mt-4">
-            <div>
-              <button
-                onClick={() => {
-                  if (currentPage > 0) {
-                    setCurrentPage((prev) => prev - 1);
-                  }
-                }}
-                disabled={currentPage === 0}
-                className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-              >
-                Previous
-              </button>
-            </div>
-
-            <div className="flex space-x-2">
-              {Array.from({ length: Math.ceil(filteredItems.length / itemsPerPage) }).slice(currentPage, currentPage + 4).map((_, i) => (
-                <button
-                  key={i + currentPage}
-                  onClick={() => setCurrentPage(currentPage + i)}
-                  className={`px-4 py-2 font-medium ${currentPage + i === currentPage ? "text-blue-600 bg-blue-100" : "text-gray-600 bg-gray-100"
-                    } border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300`}
-                >
-                  {currentPage + i + 1}
-                </button>
-              ))}
-
-
-              {currentPage + 4 < lastPage && (
-                <button
-                  onClick={() => {
-                    setCurrentPage(currentPage + 4);
-                  }}
-                  className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                >
-                  ...
-                </button>
-              )}
-            </div>
-
-            <div>
-              <button
-                onClick={() => {
-                  if (currentPage < lastPage) {
-                    setCurrentPage((prev) => prev + 1);
-                  }
-                }}
-                disabled={currentPage === lastPage}
-                className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-              >
-                Next
-              </button>
-            </div>
+          <div>
+            <button
+              onClick={() => {
+                if (currentPage > 0) {
+                  setCurrentPage((prev) => prev - 1);
+                  updateVisibleStartPage(currentPage - 1);
+                }
+              }}
+              disabled={currentPage === 0}
+              className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+            >
+              Previous
+            </button>
           </div>
+    
+          <div className="flex space-x-2">
+            {Array.from({ length: Math.ceil(filteredItems.length / itemsPerPage) }).slice(visibleStartPage, visibleStartPage + 4).map((_, i) => (
+              <button
+                key={i + visibleStartPage}
+                onClick={() => {
+                  const newCurrentPage = visibleStartPage + i;
+                  setCurrentPage(newCurrentPage);
+                  updateVisibleStartPage(newCurrentPage);
+                }}
+                className={`px-4 py-2 font-medium ${currentPage === visibleStartPage + i ? "text-blue-600 bg-blue-100" : "text-gray-600 bg-gray-100"
+                  } border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300`}
+              >
+                {visibleStartPage + i + 1}
+              </button>
+            ))}
+    
+            {visibleStartPage + 4 < lastPage && (
+              <button
+                onClick={() => {
+                  const newVisibleStartPage = visibleStartPage + 4;
+                  setVisibleStartPage(newVisibleStartPage);
+                  setCurrentPage(newVisibleStartPage);
+                }}
+                className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              >
+                ...
+              </button>
+            )}
+          </div>
+    
+          <div>
+            <button
+              onClick={() => {
+                if (currentPage < lastPage) {
+                  setCurrentPage((prev) => prev + 1);
+                  updateVisibleStartPage(currentPage + 1);
+                }
+              }}
+              disabled={currentPage === lastPage}
+              className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+
+
+
 
         </div>
       </div>
