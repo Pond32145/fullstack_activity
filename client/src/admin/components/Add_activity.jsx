@@ -80,44 +80,48 @@ function Add_Activity() {
   };
 
   return (
-    <div className="max-w-md mx-auto my-10 p-6 bg-white rounded-md shadow-md">
-      <label className="block mb-2 text-sm text-gray-600">Enter Text:</label>
-      <input
-        type="text"
-        value={inputText}
-        onChange={handleInputChange}
-        className="w-full border border-gray-300 rounded-md p-2 mb-4"
-      />
+    <div className="max-w-md mx-auto my-10 p-6  rounded-md">
+      <h1 className='text-xl font-bold text-center mb-5'>เพิ่มข้อมูลกิจกรรม</h1>
+      <div className='flex items-center '>
+        <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">ชื่อกิจกรรม :</label>
+        <input
+          type="text"
+          value={inputText}
+          onChange={handleInputChange}
+          className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
+        />
+      </div>
+      <div className='flex items-center'>
+        <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">จำนวน :</label>
+        <input
+          type="text"
+          value={inputAmount}
+          onChange={handleAmountChange}
+          className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
+        />
+      </div>
 
-      <label className="block mb-2 text-sm text-gray-600">Enter Amount:</label>
-      <input
-        type="text"
-        value={inputAmount}
-        onChange={handleAmountChange}
-        className="w-full border border-gray-300 rounded-md p-2 mb-4"
-      />
-
-      <div className="flex justify-between mb-4">
-        <div className="w-1/2 mr-2">
-          <label className="block mb-2 text-sm text-gray-600">Start Date:</label>
+      <div className="flex items-center">
+     
+          <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">เริ่มวันที่ :</label>
           <input
             type="datetime-local"
             value={inputStartDate}
             onChange={StartDate}
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
           />
         </div>
 
-        <div className="w-1/2 ml-2">
-          <label className="block mb-2 text-sm text-gray-600">End Date:</label>
+        <div className="flex items-center">
+          <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">สิ้นสุดวันที่ :</label>
           <input
             type="datetime-local"
             value={inputEndDate}
             onChange={EndDate}
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
           />
         </div>
-      </div>
+
 
       <button
         onClick={handleHashClick}

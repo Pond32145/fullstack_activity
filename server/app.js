@@ -216,7 +216,7 @@ app.get('/api/userO', (req, res) => {
 
 //ส่วนของกิจกรรม
 
-app.post('/activity', function (req, res) {
+app.post('/activity', jsonParser, function (req, res) {
     connect.query(
       'INSERT INTO actname(`act_Name`, `start_Date`, `end_Date`) VALUES (?,?,?)',
       [req.body.actName, req.body.startDate, req.body.endDate],
@@ -231,7 +231,7 @@ app.post('/activity', function (req, res) {
     );
   });
   
-  app.post('/actcode', function (req, res) {
+  app.post('/actcode', jsonParser, function (req, res) {
     connect.query('INSERT INTO actcode(`act_Code`, `act_Name`) VALUES (?,?)',
       [req.body.actCode, req.body.actName],
       function (err, results) {
@@ -287,6 +287,18 @@ app.post('/activity', function (req, res) {
 //     );
 //   });
   
+
+app.get('/api/activity', (req, res) => {
+    connect.query('SELECT * FROM actname', (err, results) => {
+        if (err) {
+            console.error('Error querying MySQL:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
+    });
+});
+
 
 app.listen(3333, jsonParser, function () {
     console.log('CORS-enabled web server listening on port 3333')
