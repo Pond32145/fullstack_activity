@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.1",
     "@mui/material": "^5.15.1",
+    "axios": "^1.6.5",
     "chart.js": "^4.4.1",
     "crypto-js": "^4.2.0",
     "mobiscroll-react": "^4.0.0",

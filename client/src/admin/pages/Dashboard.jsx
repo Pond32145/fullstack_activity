@@ -6,7 +6,7 @@ function Dashboard() {
   return (
     <div>
       <Dash_users />
-       <ListUsers />
+      <ListUsers />
     </div>
   )
 }

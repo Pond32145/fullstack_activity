@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ProductTable = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(15); // จำนวนรายการต่อหน้า
   const [currentPage, setCurrentPage] = useState(0);
@@ -27,9 +29,7 @@ const ProductTable = () => {
       .then(
         (result) => {
           setIsLoaded(true);
-          // กรองข้อมูลที่มี role เป็น "student" เท่านั้น
-          //   const filteredItems = result.filter((item) => item.role === "student");
-          setItems(result);
+          setUsers(result);
         },
         (error) => {
           setIsLoaded(true);
@@ -43,7 +43,7 @@ const ProductTable = () => {
     setCurrentPage(0); // ตั้งค่าหน้าปัจจุบันเป็น 0 เมื่อมีการค้นหา
   };
 
-  const filteredItems = items.filter((item) => {
+  const filteredItems = users.filter((item) => {
     return (
       item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.fname.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -62,7 +62,7 @@ const ProductTable = () => {
 
     return (
       <div className="mb-10 container mx-auto md:px-20">
-        <div className="shadow-md sm:rounded-lg bg-white p-4 w-full">
+        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4 w-full">
 
           <div className="text-lg font-bold mb-2">รายชื่อผู้ใช้งานระบบ</div>
           <div className="flex justify-between">
@@ -117,12 +117,10 @@ const ProductTable = () => {
             </div>
           </div>
 
-
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             {/* ... ส่วนหัวตาราง ... */}
             <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 flex w-full">
               <tr className="flex w-full">
-
                 <th scope="col" className="px-6 py-3 w-1/6">
                   รหัสนักศึกษา
                 </th>
@@ -138,14 +136,14 @@ const ProductTable = () => {
                 <th scope="col" className="px-6 py-3 w-1/6">
                   บทบาท
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/6">
+                <th scope="col" className="px-6 py-3 w-2/6 text-center">
                   ดูเพิ่มเติม
                 </th>
               </tr>
             </thead>
-            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{ height: '50vh' }}>
-              {visibleItems.map((item) => (
-                <tr key={item.username} className="border-b-2 flex w-full ">
+            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{height:'50vh'}}>
+            {visibleItems.map((item) => (
+              <tr key={item.username} className="border-b-2 flex w-full ">
 
                   <td scope="col" className="px-6 py-3 w-1/6">
                     {item.username}
@@ -162,8 +160,18 @@ const ProductTable = () => {
                   <td scope="col" className="px-6 py-3 w-1/6">
                     {item.role}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6 ">
-                    เพิ่มเติม
+                  <td scope="col" className="px-6 py-3 w-2/6 text-center">
+                  <div className="inline-flex">
+
+                  <Link to={`update/${item.id}`}>
+                    <button  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                      UPDATE
+                    </button>
+                  </Link>
+                  <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                    DELETE
+                  </button>
+                </div>
                   </td>
                 </tr>
               ))}
@@ -171,66 +179,66 @@ const ProductTable = () => {
           </table>
 
           <div className="flex items-center justify-between mt-4">
-          <div>
-            <button
-              onClick={() => {
-                if (currentPage > 0) {
-                  setCurrentPage((prev) => prev - 1);
-                  updateVisibleStartPage(currentPage - 1);
-                }
-              }}
-              disabled={currentPage === 0}
-              className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            >
-              Previous
-            </button>
-          </div>
-    
-          <div className="flex space-x-2">
-            {Array.from({ length: Math.ceil(filteredItems.length / itemsPerPage) }).slice(visibleStartPage, visibleStartPage + 4).map((_, i) => (
-              <button
-                key={i + visibleStartPage}
-                onClick={() => {
-                  const newCurrentPage = visibleStartPage + i;
-                  setCurrentPage(newCurrentPage);
-                  updateVisibleStartPage(newCurrentPage);
-                }}
-                className={`px-4 py-2 font-medium ${currentPage === visibleStartPage + i ? "text-blue-600 bg-blue-100" : "text-gray-600 bg-gray-100"
-                  } border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300`}
-              >
-                {visibleStartPage + i + 1}
-              </button>
-            ))}
-    
-            {visibleStartPage + 4 < lastPage && (
+            <div>
               <button
                 onClick={() => {
-                  const newVisibleStartPage = visibleStartPage + 4;
-                  setVisibleStartPage(newVisibleStartPage);
-                  setCurrentPage(newVisibleStartPage);
+                  if (currentPage > 0) {
+                    setCurrentPage((prev) => prev - 1);
+                    updateVisibleStartPage(currentPage - 1);
+                  }
                 }}
+                disabled={currentPage === 0}
                 className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
               >
-                ...
+                Previous
               </button>
-            )}
+            </div>
+
+            <div className="flex space-x-2">
+              {Array.from({ length: Math.ceil(filteredItems.length / itemsPerPage) }).slice(visibleStartPage, visibleStartPage + 4).map((_, i) => (
+                <button
+                  key={i + visibleStartPage}
+                  onClick={() => {
+                    const newCurrentPage = visibleStartPage + i;
+                    setCurrentPage(newCurrentPage);
+                    updateVisibleStartPage(newCurrentPage);
+                  }}
+                  className={`px-4 py-2 font-medium ${currentPage === visibleStartPage + i ? "text-blue-600 bg-blue-100" : "text-gray-600 bg-gray-100"
+                    } border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300`}
+                >
+                  {visibleStartPage + i + 1}
+                </button>
+              ))}
+
+              {visibleStartPage + 4 < lastPage && (
+                <button
+                  onClick={() => {
+                    const newVisibleStartPage = visibleStartPage + 4;
+                    setVisibleStartPage(newVisibleStartPage);
+                    setCurrentPage(newVisibleStartPage);
+                  }}
+                  className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                >
+                  ...
+                </button>
+              )}
+            </div>
+
+            <div>
+              <button
+                onClick={() => {
+                  if (currentPage < lastPage) {
+                    setCurrentPage((prev) => prev + 1);
+                    updateVisibleStartPage(currentPage + 1);
+                  }
+                }}
+                disabled={currentPage === lastPage}
+                className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              >
+                Next
+              </button>
+            </div>
           </div>
-    
-          <div>
-            <button
-              onClick={() => {
-                if (currentPage < lastPage) {
-                  setCurrentPage((prev) => prev + 1);
-                  updateVisibleStartPage(currentPage + 1);
-                }
-              }}
-              disabled={currentPage === lastPage}
-              className="px-4 py-2 font-medium text-gray-600 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            >
-              Next
-            </button>
-          </div>
-        </div>
 
 
 

@@ -5,22 +5,23 @@ const Add_Users = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const jsonData = {
-        username: data.get('username'),
-        password: data.get('password'),
-        fname: data.get('fname'),
-        lname: data.get('lname'),
-        section: data.get('section'),
-   
-        // role: data.get('role'),
+      username: data.get('username'),
+      password: data.get('password'),
+      fname: data.get('fname'),
+      lname: data.get('lname'),
+      section: data.get('section'),
+      role: data.get('role'),
+
+      // role: data.get('role'),
     }
-    fetch('http://localhost:3333/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jsonData),
-      
-      })
+    fetch('http://localhost:3333/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(jsonData),
+
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -30,21 +31,21 @@ const Add_Users = () => {
 
       .then(data => {
         if (data.status === 'ok') {
-          alert('register sucess')
+          alert('create sucess')
           localStorage.setItem('token', data.token)
-        //   window.location ='/album'
+          //   window.location ='/album'
         } else {
-          alert('register failed')
+          alert('create failed')
           console.log("error", data);
         }
       })
       .catch((error) => {
         console.log("error", error);
       });
- 
+
   };
 
-  
+
 
   return (
     <div className="flex justify-center items-center  bg-gray-100 rounded-lg ">
@@ -57,7 +58,7 @@ const Add_Users = () => {
             type="text"
             id="username"
             name="username"
-          
+
             className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
@@ -68,7 +69,7 @@ const Add_Users = () => {
             type="password"
             id="password"
             name="password"
-   
+
             className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
@@ -105,16 +106,26 @@ const Add_Users = () => {
             className="mt-1 p-1 w-full border-b-2 rounded-md"
           />
         </div>
+        <div className="mb-4 col-span-2">
+          <label htmlFor="section" className="block text-sm font-medium text-gray-600">Section</label>
+          <select id="role" name="role"  className="mt-1 p-1 w-full border-b-2 rounded-md">
+            <option value="">Select an Role</option>
+            <option value="student">student</option>
+            <option value="teacher">teacher</option>
+            <option value="admin">admin</option>
+      
+          </select>
+        </div>
 
-     
-<div></div>
+
+        <div></div>
         <div className="text-right">
           <button type="submit" className=" w-fit p-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring focus:border-purple-300">
             เพิ่มข้อมูล
           </button>
         </div>
-        
-        
+
+
       </form>
     </div>
   );

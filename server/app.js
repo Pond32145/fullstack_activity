@@ -18,69 +18,19 @@ app.use(cors())
 
 const mysql = require('mysql2');
 // create the connection to database
-const pool = mysql.createPool({
+const connect = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'activitydb',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
-
-app.post('/register', jsonParser, (req, res, next) => {
-    try {
-        const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
-
-        pool.execute(
-            'INSERT INTO user (username, password, fname, lname, section, role) VALUES (?,?,?,?,?,?)',
-            [req.body.username, hashedPassword, req.body.fname, req.body.lname, req.body.section, 'student'],
-            (err, results, fields) => {
-                if (err) {
-                    res.json({ status: 'error', message: err });
-                    return;
-                }
-                res.json({ status: 'ok' });
-            }
-        );
-    } catch (error) {
-        res.json({ status: 'error', message: error.message });
-    }
 });
 
 
-//เพิ่มข้อมูล user จำนวนมากผ่าน POSTMAN ด้วย JSON
-app.post('/addusers', jsonParser, (req, res, next) => {
-    try {
-        const users = req.body;  // สมมุติว่า req.body เป็น array ของผู้ใช้
 
-        users.forEach(async (user) => {
-            const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-
-            pool.execute(
-                'INSERT INTO user (username, password, fname, lname, section, role) VALUES (?,?,?,?,?,?)',
-                [user.username, hashedPassword, user.fname, user.lname, user.section, 'student'],
-                (err, results, fields) => {
-                    if (err) {
-                        console.error('Error inserting user:', err);
-                        return;
-                    }
-                    console.log('User inserted:', results);
-                }
-            );
-        });
-
-        res.json({ status: 'ok' });
-    } catch (error) {
-        res.json({ status: 'error', message: error.message });
-    }
-});
-
-
+//  login
 app.post('/login', jsonParser, function (req, res, next) {
-    pool.execute(
-        'SELECT * FROM user WHERE username=?',
-        [req.body.username],
+    connect.execute(
+        'SELECT * FROM user WHERE username=?', [req.body.username],
         function (err, user, fields) {
             if (err) {
                 res.json({ status: 'error', message: err });
@@ -110,7 +60,7 @@ app.post('/login', jsonParser, function (req, res, next) {
     );
 });
 
-
+// ตรวจสอบการเข้าใช้
 app.post('/authen', jsonParser, function (req, res, next) {
     try {
         const token = req.headers.authorization.split(' ')[1]
@@ -122,8 +72,63 @@ app.post('/authen', jsonParser, function (req, res, next) {
 
 })
 
+
+//create
+app.post('/create', jsonParser, (req, res, next) => {
+    try {
+        const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+
+        connect.execute(
+            'INSERT INTO user (username, password, fname, lname, section, role) VALUES (?,?,?,?,?,?)',
+            [req.body.username, hashedPassword, req.body.fname, req.body.lname, req.body.section, req.body.role],
+            (err, results, fields) => {
+                if (err) {
+                    res.json({ status: 'error', message: err });
+                    return;
+                }
+                res.json({ status: 'ok' });
+            }
+        );
+    } catch (error) {
+        res.json({ status: 'error', message: error.message });
+    }
+});
+
+
+
+
+//เพิ่มข้อมูล user จำนวนมากผ่าน POSTMAN ด้วย JSON
+app.post('/addusers', jsonParser, (req, res, next) => {
+    try {
+        const users = req.body;  // สมมุติว่า req.body เป็น array ของผู้ใช้
+
+        users.forEach(async (user) => {
+            const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+
+            connect.execute(
+                'INSERT INTO user (username, password, fname, lname, section, role) VALUES (?,?,?,?,?,?)',
+                [user.username, hashedPassword, user.fname, user.lname, user.section, 'student'],
+                (err, results, fields) => {
+                    if (err) {
+                        console.error('Error inserting user:', err);
+                        return;
+                    }
+                    console.log('User inserted:', results);
+                }
+            );
+        });
+
+        res.json({ status: 'ok' });
+    } catch (error) {
+        res.json({ status: 'error', message: error.message });
+    }
+});
+
+
+
+// read ดึงข้อมูลของ users
 app.get('/api/user', (req, res) => {
-    pool.query('SELECT * FROM user', (err, results) => {
+    connect.query('SELECT * FROM user', (err, results) => {
         if (err) {
             console.error('Error querying MySQL:', err);
             res.status(500).send('Internal Server Error');
@@ -133,12 +138,66 @@ app.get('/api/user', (req, res) => {
     });
 });
 
+// update 
+app.put('/update/:id', jsonParser, (req, res, next) => {
+    try {
+        const id = req.params.id;
+
+        if (req.body.password) {
+            // ถ้ามีการระบุรหัสผ่านใหม่
+            const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+            updateWithPassword(id, hashedPassword, req.body);
+        } else {
+            // ถ้าไม่มีการระบุรหัสผ่านใหม่
+            updateWithoutPassword(id, req.body);
+        }
+
+        res.json({ status: 'ok' });
+    } catch (error) {
+        res.json({ status: 'error', message: error.message });
+    }
+});
+
+function updateWithPassword(id, hashedPassword, userData) {
+    connect.execute(
+        'UPDATE user SET username=?, password=?, fname=?, lname=?, section=?, role=? WHERE id=?',
+        [userData.username, hashedPassword, userData.fname, userData.lname, userData.section, 'student', id],
+        (err, results, fields) => {
+            if (err) {
+                throw new Error(err);
+            }
+        }
+    );
+}
+
+function updateWithoutPassword(id, userData) {
+    connect.execute(
+        'UPDATE user SET username=?, fname=?, lname=?, section=?, role=? WHERE id=?',
+        [userData.username, userData.fname, userData.lname, userData.section, 'student', id],
+        (err, results, fields) => {
+            if (err) {
+                throw new Error(err);
+            }
+        }
+    );
+}
+
+
+  app.get('/api/user1', (req, res) => {
+    const query = 'SELECT * FROM user '; // เรียกดูข้อมูลเพียงหนึ่งแถว
+    connect.query(query, (error, results, fields) => {
+      if (error) throw error;
+      res.json(results[0]); // ส่งข้อมูลเพียงหนึ่งแถวกลับไป
+    });
+  });
+  
+
 
 app.get('/api/userO', (req, res) => {
     const { username } = req.query;
     const query = 'SELECT * FROM user WHERE username = ?';
 
-    pool.query(query, [username], (err, results) => {
+    connect.query(query, [username], (err, results) => {
         if (err) {
             console.error('Error fetching user data:', err);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -158,7 +217,7 @@ app.get('/api/userO', (req, res) => {
 //ส่วนของกิจกรรม
 
 app.post('/activity', function (req, res) {
-    pool.query(
+    connect.query(
       'INSERT INTO actname(`act_Name`, `start_Date`, `end_Date`) VALUES (?,?,?)',
       [req.body.actName, req.body.startDate, req.body.endDate],
       function (err, results) {
@@ -173,7 +232,7 @@ app.post('/activity', function (req, res) {
   });
   
   app.post('/actcode', function (req, res) {
-    pool.query('INSERT INTO actcode(`act_Code`, `act_Name`) VALUES (?,?)',
+    connect.query('INSERT INTO actcode(`act_Code`, `act_Name`) VALUES (?,?)',
       [req.body.actCode, req.body.actName],
       function (err, results) {
         if (err) {
@@ -193,7 +252,7 @@ app.post('/activity', function (req, res) {
 //       return res.status(400).json({ error: 'actCode is required in the query parameters' });
 //     }
   
-//     pool.execute(
+//     connect.execute(
 //       'SELECT actname.*, actcode.act_Code FROM actname INNER JOIN actcode ON actname.act_Name=actcode.act_Name WHERE act_Code = ?',
 //       [actCodeParam],
 //       function (errS, resultsS) {
@@ -208,7 +267,7 @@ app.post('/activity', function (req, res) {
   
 //           // เพิ่มการตรวจสอบว่า DactCodeParam มีค่าหรือไม่
 //           if (DactCodeParam) {
-//             pool.execute('DELETE FROM actcode WHERE act_Code = ?',
+//             connect.execute('DELETE FROM actcode WHERE act_Code = ?',
 //               [DactCodeParam],
 //               function (errD, resultsD) {
 //                 if (errD) {

@@ -22,6 +22,8 @@ import ListUsers from './admin/components/ListUsers.jsx'
 import CalendarA from './admin/pages/Calendar.jsx'
 import Add_Activity from './admin/pages/Add_activity.jsx'
 import Add_Users from './admin/components/Add_users.jsx'
+import Update_user from './admin/components/Update_user.jsx'
+
 
 
 
@@ -54,7 +56,11 @@ const router = createBrowserRouter([
         path: "addusers",
         element: <Add_Users />,
       },
-
+      {
+        path: "update",
+        element: <Update_user />,
+      },
+ 
     ]
   },
   {
