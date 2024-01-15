@@ -1,10 +1,4 @@
-// StudentForm.js
-
 import { useState, useEffect } from "react";
-
-// import React from 'react';
-
-
 
 const StudentForm = () => {
   const [userData, setUserData] = useState(null);
@@ -37,12 +31,13 @@ const StudentForm = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="flex w-4/5 mx-auto shadow-xl rounded-lg bg-slate-100 p-5">
-      <div className=" w-1/3">
-
-      </div>
-      <div className="w-2/3 mx-auto mt-10 p-4 bg-white shadow-md rounded-md">
-        <form className="grid grid-cols-2 gap-4">
+    <div className="flex flex-col lg:flex-row w-4/5 mx-auto shadow-xl rounded-lg bg-slate-100 p-5">
+    <div className="w-full lg:w-1/3 mb-4 lg:mb-0">
+  
+    </div>
+    <div className="w-full lg:w-2/3 mx-auto mt-10 p-4 bg-white shadow-md rounded-md">
+      <form className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  
 
           <div className="mb-4">
             <label htmlFor="studentId" className="block text-sm font-medium text-gray-600">

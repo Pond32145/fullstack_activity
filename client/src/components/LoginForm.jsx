@@ -28,7 +28,7 @@ export default function SignInSide() {
                     } else if (data.role === 'teacher') {
                         window.location = '/teacher/calendar'; // Redirect to teacher dashboard
                     } else {
-                        window.location = '/activity/home'; // Redirect to user dashboard
+                        window.location = '/activity/dashboard'; // Redirect to user dashboard
                     }
                 } else {
                     alert('login failed');
