@@ -46,6 +46,7 @@ const ProductTable = () => {
   const filteredItems = activity.filter((item) => {
     return (
       item.act_Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.start_Date.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
@@ -90,7 +91,7 @@ const ProductTable = () => {
                   type="text"
                   id="table-search"
                   className="pb-2 block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="ค้นหาผู้ใช้งาน"
+                  placeholder="ค้นหากิจกรรม"
                   value={searchTerm}
                   onChange={handleSearch}
                 />
@@ -123,10 +124,10 @@ const ProductTable = () => {
                 <th scope="col" className="px-6 py-3 w-1/12">
                   ลำดับ
                 </th>
-                <th scope="col" className="px-6 py-3 w-4/12 text-left">
+                <th scope="col" className="px-6 py-3 w-3/12 text-left">
                   ชื่อกิจกรรม
                 </th>
-                <th scope="col" className="px-6 py-3 w-4/12 text-left">
+                <th scope="col" className="px-6 py-3 w-3/12 text-left">
                   สถานที่
                 </th>
                 <th scope="col" className="px-6 py-3 w-3/12">
@@ -145,11 +146,11 @@ const ProductTable = () => {
                   <td scope="col" className="px-6 py-3 w-1/12">
                    {index + 1}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-4/12 text-left">
+                  <td scope="col" className="px-6 py-3 w-3/12 text-left">
                     {item.act_Name}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-4/12 text-left">
-                    Example
+                  <td scope="col" className="px-6 py-3 w-3/12 text-left">
+                  {item.location}
                   </td>
                   <td scope="col" className="px-6 py-3 w-3/12">
                     {item.start_Date.slice(0, 10)}

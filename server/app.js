@@ -218,8 +218,8 @@ app.get('/api/userO', (req, res) => {
 
 app.post('/activity', jsonParser, function (req, res) {
     connect.query(
-      'INSERT INTO actname(`act_Name`, `start_Date`, `amount`, `end_Date`) VALUES (?,?,?,?)',
-      [req.body.actName, req.body.startDate, req.body.amount, req.body.endDate],
+      'INSERT INTO actname(`act_Name`, `start_Date`, `location`, `amount`, `end_Date`) VALUES (?,?,?,?,?)',
+      [req.body.actName, req.body.startDate,req.body.location, req.body.amount, req.body.endDate],
       function (err, results) {
         if (err) {
           console.error('Error inserting into database:', err);

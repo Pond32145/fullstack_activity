@@ -5,6 +5,7 @@ function Add_Activity() {
   const [inputText, setInputText] = useState('');
   const [inputAmount, setInputAmount] = useState(1);
   const [hashedText, setHashedText] = useState('');
+  const [inputLocation, setInputLocation] = useState('');
   const [inputStartDate, setStartDate] = useState('');
   const [inputEndDate, setEndDate] = useState('');
 
@@ -14,6 +15,9 @@ function Add_Activity() {
 
   const handleAmountChange = (event) => {
     setInputAmount(event.target.value);
+  };
+  const handleLocation = (event) => {
+    setInputLocation(event.target.value);
   };
 
   const StartDate = (event) => {
@@ -59,6 +63,7 @@ function Add_Activity() {
     const activity = {
       actName: inputText,
       amount: inputAmount,
+      location: inputLocation,
       startDate: inputStartDate,
       endDate: inputEndDate
     };
@@ -99,6 +104,15 @@ function Add_Activity() {
           type="text"
           value={inputAmount}
           onChange={handleAmountChange}
+          className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
+        />
+      </div>
+      <div className='flex items-center'>
+        <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">สถานที่ :</label>
+        <input
+          type="text"
+          value={inputLocation}
+          onChange={handleLocation}
           className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
         />
       </div>
