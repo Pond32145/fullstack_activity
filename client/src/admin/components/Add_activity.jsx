@@ -34,7 +34,8 @@ function Add_Activity() {
 
       const CodeData = {
         actName: inputText,
-        actCode: upperActivtyCode
+        actCode: upperActivtyCode,
+        amount: inputAmount
       };
 
       fetch('http://localhost:3333/actcode', {
@@ -57,6 +58,7 @@ function Add_Activity() {
 
     const activity = {
       actName: inputText,
+      amount: inputAmount,
       startDate: inputStartDate,
       endDate: inputEndDate
     };

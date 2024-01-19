@@ -13,6 +13,17 @@ const ProductTable = () => {
   const [visibleStartPage, setVisibleStartPage] = useState(0);
 
 
+  const userParams = (item) => {
+    localStorage.removeItem('userParams');
+    try {
+      localStorage.setItem('userParams', item.username);
+      console.log(item.username);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
+
 
 
   const updateVisibleStartPage = (newCurrentPage) => {
@@ -62,8 +73,7 @@ const ProductTable = () => {
 
     return (
       <div className="mb-10 container mx-auto md:px-20">
-        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4 w-full">
-
+        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4">
           <div className="text-lg font-bold mb-2">รายชื่อผู้ใช้งานระบบ</div>
           <div className="flex justify-between">
             <div className="pb-4 items-center">
@@ -136,42 +146,45 @@ const ProductTable = () => {
                 <th scope="col" className="px-6 py-3 w-1/6">
                   บทบาท
                 </th>
-                <th scope="col" className="px-6 py-3 w-2/6 text-center">
+                <th scope="col" className="px-6 py-3 w-1/6 text-center">
                   ดูเพิ่มเติม
                 </th>
               </tr>
             </thead>
-            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{height:'50vh'}}>
-            {visibleItems.map((item) => (
-              <tr key={item.username} className="border-b-2 flex w-full ">
+            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{ height: '50vh' }}>
+              {visibleItems.map((item) => (
+                <tr key={item.username} className="border-b-2 flex w-full items-center">
 
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-2 w-1/6">
                     {item.username}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-2 w-1/6">
                     {item.fname}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-2 w-1/6">
                     {item.lname}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-2 w-1/6">
                     {item.section}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-2 w-1/6">
                     {item.role}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-2/6 text-center">
-                  <div className="inline-flex">
+                  <td scope="col" className="px-6 py-2 w-1/6 text-center">
+                    <div className="inline-flex">
 
-                  <Link to={`update/${item.id}`}>
-                    <button  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-                      UPDATE
-                    </button>
-                  </Link>
-                  <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-                    DELETE
-                  </button>
-                </div>
+                      <Link to={{ pathname: `/admin/update` }} onClick={() => userParams(item)}>
+                        <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-l">
+                          UPDATE
+                        </button>
+                      </Link>
+
+
+
+                      <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-r">
+                        DELETE
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

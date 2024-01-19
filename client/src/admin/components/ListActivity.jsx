@@ -59,7 +59,7 @@ const ProductTable = () => {
     const visibleItems = filteredItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-      <div className="mb-10 container mx-auto md:px-20">
+      <div className=" mb-10 container mx-auto">
         <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4 w-full">
 
           <div className="text-lg font-bold mb-2">รายชื่อกิจกรรม</div>
@@ -115,31 +115,50 @@ const ProductTable = () => {
             </div>
           </div>
 
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <table className="text-center w-full text-sm rtl:text-center text-gray-500 dark:text-gray-400">
             {/* ... ส่วนหัวตาราง ... */}
             <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 flex w-full">
               <tr className="flex w-full">
-                <th scope="col" className="px-6 py-3 w-1/6">
+
+                <th scope="col" className="px-6 py-3 w-1/12">
+                  ลำดับ
+                </th>
+                <th scope="col" className="px-6 py-3 w-4/12 text-left">
                   ชื่อกิจกรรม
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/6">
+                <th scope="col" className="px-6 py-3 w-4/12 text-left">
+                  สถานที่
+                </th>
+                <th scope="col" className="px-6 py-3 w-3/12">
                   วันจัดกิจกรรม
                 </th>
-            
+                <th scope="col" className="px-6 py-3 w-2/12">
+                  จำนวน
+                </th>
+
               </tr>
             </thead>
             <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between">
-            {visibleItems.map((item) => (
-              <tr key={item.act_ID} className="border-b-2 flex w-full ">
-
-                  <td scope="col" className="px-6 py-3 w-1/6">
+              {visibleItems.map((item, index) => (
+                <tr key={item.act_ID} className="border-b-2 flex w-full ">
+              
+                  <td scope="col" className="px-6 py-3 w-1/12">
+                   {index + 1}
+                  </td>
+                  <td scope="col" className="px-6 py-3 w-4/12 text-left">
                     {item.act_Name}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-4/12 text-left">
+                    Example
+                  </td>
+                  <td scope="col" className="px-6 py-3 w-3/12">
                     {item.start_Date.slice(0, 10)}
                   </td>
+                  <td scope="col" className="px-6 py-3 w-2/12">
+                    {item.amount}
+                  </td>
 
-                
+
                 </tr>
               ))}
             </tbody>

@@ -30,19 +30,19 @@ function Dash_users() {
   }, []);
 
   return (
-    <div className='container mx-auto px-10 md:px-20 mb-5'>
+    <div className='container mx-auto  md:px-10 mb-5'>
       <div>
 
         {isLoaded ? (
 
           <div>
           
-            <div className='flex justify-between items-center'>
+            {/* <div className='flex justify-between items-center'>
               <h2 className='text-xl font-bold'>จัดการกิจกรรม</h2>
               <Popup />
-            </div>
+            </div> */}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pr-2 pl-2 pt-3">
+            <div className="grid grid-cols-1 gap-4 ">
               <div className="bg-blue-500 p-4 text-white h-28 rounded-md shadow-lg flex flex-col justify-center items-center transition-all hover:bg-blue-600">
                 <div className='text-2xl flex items-center gap-2'>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
