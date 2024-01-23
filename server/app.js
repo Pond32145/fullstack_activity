@@ -9,10 +9,6 @@ var jwt = require('jsonwebtoken');
 const secret = 'Fullstack-Login'
 
 app.use(cors())
-// app.use(bodyParser.json());
-// app.use(express.json());
-
-
 
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', '*');
@@ -209,21 +205,21 @@ app.patch('/api/update/:id', jsonParser, (req, res) => {
 // }
 
 
-//   app.get('/api/user1', (req, res) => {
-//     const query = 'SELECT * FROM user '; // เรียกดูข้อมูลเพียงหนึ่งแถว
-//     connect.query(query, (error, results, fields) => {
-//       if (error) throw error;
-//       res.json(results[0]); // ส่งข้อมูลเพียงหนึ่งแถวกลับไป
-//     });
-//   });
-
+  app.get('/api/user1', (req, res) => {
+    const query = 'SELECT * FROM user '; // เรียกดูข้อมูลเพียงหนึ่งแถว
+    connect.query(query, (error, results, fields) => {
+      if (error) throw error;
+      res.json(results[0]); // ส่งข้อมูลเพียงหนึ่งแถวกลับไป
+    });
+  });
+  
 
 
 app.get('/api/userO', (req, res) => {
-    const { id } = req.query;
+    const { username } = req.query;
     const query = 'SELECT * FROM user WHERE username = ?';
 
-    connect.query(query, [id], (err, results) => {
+    connect.query(query, [username], (err, results) => {
         if (err) {
             console.error('Error fetching user data:', err);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -238,48 +234,46 @@ app.get('/api/userO', (req, res) => {
             res.status(404).json({ message: 'User not found' });
         }
     });
-
-    console.query
 });
 
 //ส่วนของกิจกรรม
 
 app.post('/activity', jsonParser, function (req, res) {
     connect.query(
-        'INSERT INTO actname(`act_Name`, `start_Date`, `end_Date`) VALUES (?,?,?)',
-        [req.body.actName, req.body.startDate, req.body.endDate], // Change actId to actCode
-        function (err, results) {
-            if (err) {
-                console.error('Error inserting into database:', err);
-                res.status(500).json({ error: 'Internal Server Error' });
-            } else {
-                res.json(results);
-            }
+      'INSERT INTO actname(`act_Name`, `start_Date`, `location`, `amount`, `end_Date`) VALUES (?,?,?,?,?)',
+      [req.body.actName, req.body.startDate,req.body.location, req.body.amount, req.body.endDate],
+      function (err, results) {
+        if (err) {
+          console.error('Error inserting into database:', err);
+          res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+          res.json(results);
         }
+      }
     );
-});
-
-app.post('/actcode', jsonParser, function (req, res) {
+  });
+  
+  app.post('/actcode', jsonParser, function (req, res) {
     connect.query('INSERT INTO actcode(`act_Code`, `act_Name`) VALUES (?,?)',
-        [req.body.actCode, req.body.actName],
-        function (err, results) {
-            if (err) {
-                console.error('Error inserting into database:', err);
-                res.status(500).json({ error: 'Internal Server Error' });
-            } else {
-                res.json(results);
-            }
+      [req.body.actCode, req.body.actName],
+      function (err, results) {
+        if (err) {
+          console.error('Error inserting into database:', err);
+          res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+          res.json(results);
         }
+      }
     );
-});
-
+  });
+  
 //   app.get('/check', function (req, res) {
 //     const actCodeParam = req.query.actCode;
-
+  
 //     if (!actCodeParam) {
 //       return res.status(400).json({ error: 'actCode is required in the query parameters' });
 //     }
-
+  
 //     connect.execute(
 //       'SELECT actname.*, actcode.act_Code FROM actname INNER JOIN actcode ON actname.act_Name=actcode.act_Name WHERE act_Code = ?',
 //       [actCodeParam],
@@ -289,10 +283,10 @@ app.post('/actcode', jsonParser, function (req, res) {
 //           res.status(500).json({ error: 'Internal Server Error' });
 //         } else {
 //           console.log("Join activity successfully");
-
+  
 //           // เพิ่มตรวจสอบก่อนที่จะอ้างถึง 'act_Code'
 //           const DactCodeParam = resultsS[0] && resultsS[0].act_Code;
-
+  
 //           // เพิ่มการตรวจสอบว่า DactCodeParam มีค่าหรือไม่
 //           if (DactCodeParam) {
 //             connect.execute('DELETE FROM actcode WHERE act_Code = ?',
@@ -314,6 +308,18 @@ app.post('/actcode', jsonParser, function (req, res) {
 //       }
 //     );
 //   });
+  
+
+app.get('/api/activity', (req, res) => {
+    connect.query('SELECT * FROM actname', (err, results) => {
+        if (err) {
+            console.error('Error querying MySQL:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        res.json(results);
+    });
+});
 
 
 app.listen(3333, jsonParser, function () {
