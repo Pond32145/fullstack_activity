@@ -28,7 +28,6 @@ import Update_user from './admin/components/Update_user.jsx'
 
 
 
-
 const router = createBrowserRouter([
   {
     path: "/",

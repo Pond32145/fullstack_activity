@@ -20,6 +20,7 @@
     "mobiscroll-react": "^4.0.0",
     "react": "^18.2.0",
     "react-awesome-modal": "^2.0.5",
+    "react-big-calendar": "^1.8.6",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",

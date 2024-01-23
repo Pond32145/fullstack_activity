@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2'
-
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Link } from "react-router-dom";
 
 
 function Update_user() {
@@ -24,6 +25,9 @@ function Update_user() {
     } else if (id === "amphure_id") {
       setDistrictValue(selectedValue);
     }
+    else if (id === "tambon_id") {
+      setTumnonsValue(selectedValue);
+    }
 
   };
 
@@ -39,28 +43,28 @@ function Update_user() {
       setChilds.forEach((setChild) => setChild([]));
       const entries = childsId.map((child) => [child, undefined]);
       const unSelectChilds = Object.fromEntries(entries);
-  
+
       const input = event.target.value;
       const dependId = input ? Number(input) : undefined;
       setSelected((prev) => ({ ...prev, ...unSelectChilds, [id]: dependId }));
-  
-      if (!input) return; 
-  
+
+      if (!input) return;
+
       if (child) {
         const parent = list.find(((item) => item.id === dependId));
         const { [child]: childs } = parent;
         const [setChild] = setChilds;
         setChild(childs);
       }
-  
+
       const selectedValue = list.find((item) => item.id === dependId)?.name_th || '';
       onChangeHandle(id, selectedValue);
     };
-  
+
     return (
       <>
         <select value={selected[id] ?? valuePD} onChange={onChangeHandleLocal} className="mt-1 p-2 border w-full rounded-md">
-          <option />
+          <option label={valuePD} />
           {list &&
             list.map((item) => (
               <option
@@ -75,7 +79,7 @@ function Update_user() {
       </>
     );
   };
-  
+
 
 
   const [username, setUsername] = useState('');
@@ -87,6 +91,7 @@ function Update_user() {
   const [addressValue, setAddressValue] = useState('');
   const [provinceValue, setProvinceValue] = useState('');
   const [districtsValue, setDistrictValue] = useState('');
+  const [tumnonsValue, setTumnonsValue] = useState('');
   const [zipcodeValue, setZipcodeValue] = useState('');
 
   const userParams = localStorage.getItem('userParams');
@@ -113,6 +118,7 @@ function Update_user() {
         setBirthdateValue(data.birthdate);
         setAddressValue(data.address);
         setDistrictValue(data.district);
+        setTumnonsValue(data.tumbons);
         setProvinceValue(data.province);
         setZipcodeValue(data.zipcode);
       })
@@ -179,6 +185,7 @@ function Update_user() {
       birthdate: birthdateValue,
       address: addressValue,
       district: districtsValue,
+      tumbons: tumnonsValue,
       province: provinceValue,
       zipcode: zipcode,
     };
@@ -220,8 +227,10 @@ function Update_user() {
   return (
 
     <div className="w-full lg:w-2/3 mx-auto mt-10 p-4 bg-white shadow-md rounded-md">
-      <form className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
+      <Link to='/admin/dashboard'>
+        <div className="items-center mb-5"><ArrowBackIosNewIcon />ย้อนกลับ</div>
+      </Link>
+      <form className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:px-10">
 
         <div className="mb-4">
           <label htmlFor="studentId" className="block text-sm font-medium text-gray-600">
@@ -352,6 +361,7 @@ function Update_user() {
             child="zip_code"
             childsId={["zip_code"]}
             setChilds={[setZipcode]}
+            valuePD={tumnonsValue}
           />
         </div>
 
