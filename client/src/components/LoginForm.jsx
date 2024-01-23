@@ -1,4 +1,4 @@
-
+import Logo from '../images/logoit.png';
 
 export default function SignInSide() {
     const handleSubmit = (event) => {
@@ -19,7 +19,7 @@ export default function SignInSide() {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    alert('login success');
+                    // alert('login success');
                     localStorage.setItem('token', data.token);
 
                     // Check user role and redirect accordingly
@@ -81,8 +81,9 @@ export default function SignInSide() {
         <form onSubmit={handleSubmit} className="w-full lg:w-1/2 bg-gray-900 flex flex-col items-center justify-center relative">
           <div className="grid grid-cols-1 w-11/12 sm:w-3/4 lg:w-2/3">
             <div className="flex flex-col items-center">
-              <h2 className="text-3xl font-extrabold text-white">Sign In</h2>
-              <p className="text-gray-500">to your account</p>
+              {/* <p className="text-gray-500">to your account</p> */}
+              <img src={Logo} alt="" className='w-60 -mb-14' />
+              <h2 className="text-3xl font-extrabold text-white">LOGIN</h2>
             </div>
             <div className="mt-4">
               <label htmlFor="username" className="text-sm font-bold text-white">Username</label>

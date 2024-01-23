@@ -86,6 +86,15 @@ function Add_Activity() {
     setHashedText(allHashes);
   };
 
+  const showSweetAlert = () => {
+    Swal.fire({
+      title: 'Hashed Texts',
+      html: `<pre>${hashedText}</pre>`,
+      confirmButtonText: 'OK',
+    });
+  };
+  
+
   return (
     <div className="max-w-md mx-auto my-10 p-6  rounded-md">
       <h1 className='text-xl font-bold text-center mb-5'>เพิ่มข้อมูลกิจกรรม</h1>
@@ -118,25 +127,25 @@ function Add_Activity() {
       </div>
 
       <div className="flex items-center">
-     
-          <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">เริ่มวันที่ :</label>
-          <input
-            type="datetime-local"
-            value={inputStartDate}
-            onChange={StartDate}
-            className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
-          />
-        </div>
 
-        <div className="flex items-center">
-          <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">สิ้นสุดวันที่ :</label>
-          <input
-            type="datetime-local"
-            value={inputEndDate}
-            onChange={EndDate}
-            className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
-          />
-        </div>
+        <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">เริ่มวันที่ :</label>
+        <input
+          type="datetime-local"
+          value={inputStartDate}
+          onChange={StartDate}
+          className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
+        />
+      </div>
+
+      <div className="flex items-center">
+        <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">สิ้นสุดวันที่ :</label>
+        <input
+          type="datetime-local"
+          value={inputEndDate}
+          onChange={EndDate}
+          className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
+        />
+      </div>
 
 
       <button
@@ -146,12 +155,17 @@ function Add_Activity() {
         Hash
       </button>
 
+      
       {hashedText && (
         <div className="mt-4">
           <p className="text-sm text-gray-600">All Hashed Texts:</p>
           <pre className="font-mono text-sm whitespace-pre-line">{hashedText}</pre>
+
+          {/* เพิ่ม SweetAlert ตรงนี้ */}
+          <button onClick={showSweetAlert}>Show SweetAlert</button>
         </div>
       )}
+
     </div>
   );
 }

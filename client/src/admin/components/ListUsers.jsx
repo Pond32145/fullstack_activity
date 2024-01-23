@@ -73,7 +73,8 @@ const ProductTable = () => {
 
     return (
       <div className="mb-10 container mx-auto md:px-20">
-        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4">
+        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4 w-full">
+
           <div className="text-lg font-bold mb-2">รายชื่อผู้ใช้งานระบบ</div>
           <div className="flex justify-between">
             <div className="pb-4 items-center">
@@ -155,34 +156,34 @@ const ProductTable = () => {
               {visibleItems.map((item) => (
                 <tr key={item.username} className="border-b-2 flex w-full items-center">
 
-                  <td scope="col" className="px-6 py-2 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-1/6">
                     {item.username}
                   </td>
-                  <td scope="col" className="px-6 py-2 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-1/6">
                     {item.fname}
                   </td>
-                  <td scope="col" className="px-6 py-2 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-1/6">
                     {item.lname}
                   </td>
-                  <td scope="col" className="px-6 py-2 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-1/6">
                     {item.section}
                   </td>
-                  <td scope="col" className="px-6 py-2 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-1/6">
                     {item.role}
                   </td>
-                  <td scope="col" className="px-6 py-2 w-1/6 text-center">
+                  <td scope="col" className="px-6 py-3 w-1/6 text-center">
                     <div className="inline-flex">
 
                       <Link to={{ pathname: `/admin/update` }} onClick={() => userParams(item)}>
                         <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-l">
-                          UPDATE
+                          แก้ไขประวัติส่วนตัว
                         </button>
                       </Link>
 
 
 
                       <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-r">
-                        DELETE
+                        DEL
                       </button>
                     </div>
                   </td>
