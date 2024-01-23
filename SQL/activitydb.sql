@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2024 at 05:07 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jan 23, 2024 at 04:37 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,11 +37,18 @@ CREATE TABLE `actcode` (
 --
 
 INSERT INTO `actcode` (`act_Code`, `act_Name`) VALUES
-('E56A00C3', 'JAVA'),
-('4DBE32A1', 'JAVA'),
-('948A5C98', 'JAVA'),
-('6F9A9618', 'JAVA'),
-('877DFDFB', 'JAVA');
+('5E2B7DC9', 'React'),
+('6BBA8CB0', 'React'),
+('F19727B2', 'React'),
+('52BDD5E3', 'React'),
+('6B84A213', 'React'),
+('F41FD8C7', 'Docker'),
+('9F3962E4', 'Docker'),
+('7916CE1D', 'Docker'),
+('17F22C60', 'Docker'),
+('EF7DDDCD', 'Docker'),
+('A05156F8', 'Comm'),
+('A05156F8', 'Comm');
 
 -- --------------------------------------------------------
 
@@ -52,6 +59,8 @@ INSERT INTO `actcode` (`act_Code`, `act_Name`) VALUES
 CREATE TABLE `actname` (
   `act_Name` varchar(255) NOT NULL,
   `act_ID` int(11) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `amount` varchar(255) NOT NULL,
   `start_Date` datetime NOT NULL,
   `end_Date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -60,28 +69,11 @@ CREATE TABLE `actname` (
 -- Dumping data for table `actname`
 --
 
-INSERT INTO `actname` (`act_Name`, `act_ID`, `start_Date`, `end_Date`) VALUES
-('JAVA', 3, '2024-01-10 09:10:00', '2024-01-12 15:10:00');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `testadd`
---
-
-CREATE TABLE `testadd` (
-  `name` varchar(50) NOT NULL,
-  `Id` varchar(9) NOT NULL,
-  `age` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `testadd`
---
-
-INSERT INTO `testadd` (`name`, `Id`, `age`) VALUES
-('Wave', '046', 20),
-('Bu', '16', 21);
+INSERT INTO `actname` (`act_Name`, `act_ID`, `location`, `amount`, `start_Date`, `end_Date`) VALUES
+('React', 6, '', '5', '2024-01-19 21:42:00', '2024-01-20 20:42:00'),
+('Docker', 7, 'ตึกคอม ชั้น 3', '5', '2024-01-19 21:56:00', '2024-01-20 21:57:00'),
+('Comm', 8, 'comm', '1', '2024-01-22 15:34:00', '2024-01-23 15:34:00'),
+('Comm', 9, 'comm', '1', '2024-01-22 15:34:00', '2024-01-23 15:34:00');
 
 -- --------------------------------------------------------
 
@@ -109,13 +101,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `password`, `fname`, `lname`, `section`, `role`, `tel`, `birthdate`, `address`, `district`, `province`, `zipcode`) VALUES
-('644230001', '$2b$10$LJ63UQn5S0Tno66MoLIn9e8ZTkzo9351JkpvFd2SZnoDoCMM0Vvg6', 'กรกฎา', 'เปรมกิจ', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
+('644230001', '$2b$10$LJ63UQn5S0Tno66MoLIn9e8ZTkzo9351JkpvFd2SZnoDoCMM0Vvg6', 'กรกฎา', 'เปรมกิจ', '64/38', 'student', '0987654321', '2024-01-02', '12/3', 'บางบ่อ', 'สมุทรปราการ', '10560'),
 ('644230006', '$2b$10$cRLGPFKte9evpFO9oov5MuZc9ZiS9opM9R7R32YC3EehKU3hmr3ty', 'จรัสย์', 'สืบบูรพากุล', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
 ('644230007', '$2b$10$dxgcHPJRMmCqzq1TJtQSmuxujVeL475ssNcKDiTJ3pL/vh//2EYKe', 'ชุติวัต', 'ขำสาคร', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
 ('644230009', '$2b$10$OimvyYirSfLI0U3bXdC7FeIh0m0bQyVcE7Q8zNu9QGb0MrNulIzSu', 'ณภัทร', 'ลอนุ', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
 ('644230011', '$2b$10$irUC8.pdMcuJkhLH7vFVeumC57XhuF03ZVbi3QvVUFIiSplvUSxYu', 'ณัฐพงษ์', 'สร้อยสน', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
 ('644230013', '$2b$10$AXVfHInGtfmmMeUjR.MEpuRiR/ULlrgl0I8AZZSYJA7C5x4vaKwQm', 'ธนธรณ์', 'เหนี่ยวองอาจ', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
-('644230014', '$2b$10$HEYfHe3NxqzNn3xX/vqPUOkfdeTHvwF5XajpW8ffK3qqOpbe.B6Uy', 'ธนาธิป', 'ก๊วยประเสริฐ', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
+('644230014', '$2b$10$HEYfHe3NxqzNn3xX/vqPUOkfdeTHvwF5XajpW8ffK3qqOpbe.B6Uy', 'ธนาธิป', 'ก๊วยประเสริฐ', '64/38', 'student', '0984750050', '2002-07-09', '12', 'คลองหลวง', 'ปทุมธานี', '12120'),
 ('644230016', '$2b$10$4JkTdLfFJcD/0u8cXwN7mONYwA6VV1QpmBcBSmO4XCeN.guLNdns2', 'กรัณฑ์', 'ขันทอง', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
 ('644230019', '$2b$10$QVnH0YV3aIP.SdEkj2wD/eLLojyEqlBxx.li2eRRATs.Z1zMnxbNy', 'จิรสิน', 'เกิดจงรักษ์', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
 ('644230021', '$2b$10$E.5mvch7Pvy0cd9oFWwX.OZpdL058.93og2ezdRXMRaDwygoNIOdy', 'ชนากานต์', 'ป่าสลุง', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -165,7 +157,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `actname`
 --
 ALTER TABLE `actname`
-  MODIFY `act_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `act_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
