@@ -4,10 +4,8 @@ import App from './App.jsx'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Layout from './student/components/Layout.jsx'
-import Home from './student/pages/Home.jsx'
 import DashUser from './student/pages/Dashboard.jsx'
 import Profile from './student/pages/Profile.jsx'
-import Card from './student/pages/Card.jsx'
 import Calendar from './student/pages/Calendar.jsx'
 import History from './student/pages/History.jsx'
 
@@ -22,7 +20,7 @@ import LayoutA from './admin/components/Layout.jsx'
 import ListUsers from './admin/components/ListUsers.jsx'
 import CalendarA from './admin/pages/Calendar.jsx'
 import Activity from './admin/pages/Activity.jsx'
-
+import Wallet from './admin/pages/Wallet.jsx'
 import Add_Users from './admin/components/Add_users.jsx'
 import Update_user from './admin/components/Update_user.jsx'
 
@@ -61,6 +59,10 @@ const router = createBrowserRouter([
         path: "update",
         element: <Update_user />,
       },
+      {
+        path: "wallet",
+        element: <Wallet />,
+      },
  
     ]
   },
@@ -69,20 +71,12 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "home",
-        element: <Home />,
-      },
-      {
         path: "dashboard",
         element: <DashUser />,
       },
       {
         path: "profile",
         element: <Profile />,
-      },
-      {
-        path: "card",
-        element: <Card />,
       },
       {
         path: "history",

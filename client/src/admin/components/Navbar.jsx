@@ -45,6 +45,10 @@ const NavBar = () => {
                             <li onClick={() => handleItemClick('Calendar')}
                                 className={getItemClass('Calendar')}>ปฏิทินกิจกรรม</li>
                         </Link>
+                        <Link to='/admin/wallet'>
+                            <li onClick={() => handleItemClick('Wallet')}
+                                className={getItemClass('Wallet')}>Metamask</li>
+                        </Link>
 
                         {/* <li ></li> */}
 

@@ -158,11 +158,11 @@ function Add_Activity() {
       
       {hashedText && (
         <div className="mt-4">
-          <p className="text-sm text-gray-600">All Hashed Texts:</p>
-          <pre className="font-mono text-sm whitespace-pre-line">{hashedText}</pre>
+          {/* <p className="text-sm text-gray-600">All Hashed Texts:</p> */}
+          {/* <pre className="font-mono text-sm whitespace-pre-line">{hashedText}</pre> */}
 
           {/* เพิ่ม SweetAlert ตรงนี้ */}
-          <button onClick={showSweetAlert}>Show SweetAlert</button>
+          {/* <button onClick={showSweetAlert}>Show SweetAlert</button> */}
         </div>
       )}
 

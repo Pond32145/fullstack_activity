@@ -4,10 +4,10 @@ import List_Activity from '../components/List_Activity'
 
 function Dashboard() {
   return (
-    <>
+    <div className='mt-10'>
       <DashCountAc />
       <List_Activity />
-    </>
+    </div>
   )
 }
 

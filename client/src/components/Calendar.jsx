@@ -51,7 +51,8 @@ function CalendarFull() {
   };
 
   return (
-    <div className="App w-3/4 mx-auto my-20 bg-slate-100 rounded-lg shadow-xl">
+    <div className="App w-3/4 mx-auto my-10 bg-slate-100 rounded-lg shadow-xl p-10">
+      <h1 className="text-center text-3xl font-bold mb-5">ปฏิทินกิจกรรม</h1>
       <Calendar
         localizer={localizer}
         defaultDate={new Date()}

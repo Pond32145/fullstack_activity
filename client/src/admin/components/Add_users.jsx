@@ -107,7 +107,7 @@ const Add_Users = () => {
           />
         </div>
         <div className="mb-4 col-span-2">
-          <label htmlFor="section" className="block text-sm font-medium text-gray-600">Section</label>
+          <label htmlFor="section" className="block text-sm font-medium text-gray-600">Role</label>
           <select id="role" name="role"  className="mt-1 p-1 w-full border-b-2 rounded-md">
             <option value="">Select an Role</option>
             <option value="student">student</option>
