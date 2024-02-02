@@ -1,6 +1,10 @@
 // import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
+import CloseIcon from '@mui/icons-material/Close';
 
-const Add_Users = () => {
+
+const Add_Users = ({ closeModal }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -11,16 +15,14 @@ const Add_Users = () => {
       lname: data.get('lname'),
       section: data.get('section'),
       role: data.get('role'),
+    };
 
-      // role: data.get('role'),
-    }
     fetch('http://localhost:3333/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(jsonData),
-
     })
       .then(response => {
         if (!response.ok) {
@@ -28,21 +30,25 @@ const Add_Users = () => {
         }
         return response.json();
       })
-
       .then(data => {
         if (data.status === 'ok') {
-          alert('create sucess')
-          localStorage.setItem('token', data.token)
-          //   window.location ='/album'
+          Swal.fire({
+            icon: 'success',
+            title: 'เพิ่มข้อมูลสำเร็จ!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          closeModal();
+          setTimeout(() => {
+            window.location.reload(); // รีเฟรชหน้าจอ
+          }, 2000); // ล่าช้าการรีเฟรชให้เกิดชั่วโมง 2 วินาที
         } else {
-          alert('create failed')
           console.log("error", data);
         }
       })
       .catch((error) => {
         console.log("error", error);
       });
-
   };
 
 
@@ -50,6 +56,11 @@ const Add_Users = () => {
   return (
     <div className="flex justify-center items-center  bg-gray-100 rounded-lg ">
       <form onSubmit={handleSubmit} className="p-8 rounded shadow-md grid grid-cols-2 gap-2">
+        <div></div>
+        <div className="cursor-pointer justify-between flex" onClick={closeModal}>
+          <div></div>
+          <CloseIcon />
+        </div>
         <h2 className="text-2xl font-semibold mb-6 text-gray-800 col-span-2 text-center">เพิ่มผู้ใช้</h2>
 
         <div className="mb-4">
@@ -108,12 +119,12 @@ const Add_Users = () => {
         </div>
         <div className="mb-4 col-span-2">
           <label htmlFor="section" className="block text-sm font-medium text-gray-600">Role</label>
-          <select id="role" name="role"  className="mt-1 p-1 w-full border-b-2 rounded-md">
+          <select id="role" name="role" className="mt-1 p-1 w-full border-b-2 rounded-md">
             <option value="">Select an Role</option>
             <option value="student">student</option>
             <option value="teacher">teacher</option>
             <option value="admin">admin</option>
-      
+
           </select>
         </div>
 
@@ -130,5 +141,10 @@ const Add_Users = () => {
     </div>
   );
 };
+
+Add_Users.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+};
+
 
 export default Add_Users;

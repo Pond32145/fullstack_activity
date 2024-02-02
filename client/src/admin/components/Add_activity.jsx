@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { SHA256 } from 'crypto-js';
+import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
+import CloseIcon from '@mui/icons-material/Close';
 
-function Add_Activity() {
+function Add_Activity({ closeModal }) {
   const [inputText, setInputText] = useState('');
   const [inputAmount, setInputAmount] = useState(1);
   const [hashedText, setHashedText] = useState('');
@@ -51,7 +54,17 @@ function Add_Activity() {
       })
         .then(response => response.json())
         .then(result => {
-          console.log(result);
+          Swal.fire({
+            icon: 'success',
+            title: 'เพิ่มข้อมูลสำเร็จ!',
+            showConfirmButton: false,
+            timer: 3500
+          });
+          console.log(result); 
+          closeModal();
+          setTimeout(() => {
+            window.location.reload(); // รีเฟรชหน้าจอ
+          }, 1500); // ล่าช้าการรีเฟรชให้เกิดชั่วโมง 2 วินาที
         })
         .catch(error => {
           console.error('Error:', error);
@@ -86,17 +99,22 @@ function Add_Activity() {
     setHashedText(allHashes);
   };
 
-  const showSweetAlert = () => {
-    Swal.fire({
-      title: 'Hashed Texts',
-      html: `<pre>${hashedText}</pre>`,
-      confirmButtonText: 'OK',
-    });
-  };
-  
+  // const showSweetAlert = () => {
+  //   Swal.fire({
+  //     title: 'Hashed Texts',
+  //     html: `<pre>${hashedText}</pre>`,
+  //     confirmButtonText: 'OK',
+  //   });
+  // };
+
 
   return (
     <div className="max-w-md mx-auto my-10 p-6  rounded-md">
+      <div></div>
+      <div className="cursor-pointer justify-between flex" onClick={closeModal}>
+        <div></div>
+        <CloseIcon />
+      </div>
       <h1 className='text-xl font-bold text-center mb-5'>เพิ่มข้อมูลกิจกรรม</h1>
       <div className='flex items-center '>
         <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">ชื่อกิจกรรม :</label>
@@ -155,7 +173,7 @@ function Add_Activity() {
         Hash
       </button>
 
-      
+
       {hashedText && (
         <div className="mt-4">
           {/* <p className="text-sm text-gray-600">All Hashed Texts:</p> */}
@@ -169,5 +187,11 @@ function Add_Activity() {
     </div>
   );
 }
+
+
+Add_Activity.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+};
+
 
 export default Add_Activity;

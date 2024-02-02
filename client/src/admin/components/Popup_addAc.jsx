@@ -34,7 +34,7 @@ class Popup extends Component {
                 </button>
                 <Modal visible={this.state.visible} width="500" height="400" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="-mt-10">
-                        <Add_activity />
+                        <Add_activity closeModal={() => this.closeModal()} />
                     </div>
                 </Modal>
             </div>

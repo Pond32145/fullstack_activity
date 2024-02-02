@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Modal from 'react-awesome-modal';
-import Add_users from './Add_users'
+import Add_Users from './Add_users';
 
 class Popup extends Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class Popup extends Component {
             visible: false
         });
     }
+
     render() {
         return (
             <div>
@@ -32,9 +33,9 @@ class Popup extends Component {
                         </svg>
                     </div>
                 </button>
-                <Modal visible={this.state.visible} width="500" height="230" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <Modal visible={this.state.visible} width="480" height="230" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="-mt-40">
-                        <Add_users />
+                        <Add_Users closeModal={() => this.closeModal()} />
                     </div>
                 </Modal>
             </div>
