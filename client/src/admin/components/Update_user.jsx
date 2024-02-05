@@ -205,7 +205,9 @@ function Update_user() {
           icon: 'success',
           confirmButtonText: 'OK',
         });
-        window.location.
+        setTimeout(() => {
+          window.location = '/admin/dashboard'; // รีเฟรชหน้าจอ
+        }, 1500); // ล่าช้าการรีเฟรชให้เกิดชั่วโมง 2 วินาที
 
       })
       .catch(error => {
