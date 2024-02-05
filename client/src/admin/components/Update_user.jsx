@@ -161,12 +161,12 @@ function Update_user() {
   const updateAddress = (event) => {
     setAddressValue(event.target.value);
   }
-  const updateDistrict = (event) => {
-    setDistrictValue(event.target.value);
-  }
-  const updateProvince = (event) => {
-    setProvinceValue(event.target.value);
-  }
+  // const updateDistrict = (event) => {
+  //   setDistrictValue(event.target.value);
+  // }
+  // const updateProvince = (event) => {
+  //   setProvinceValue(event.target.value);
+  // }
   const updateZipcode = (event) => {
     const value = event.target.value;
     setZipcodeValue(value);
@@ -205,6 +205,7 @@ function Update_user() {
           icon: 'success',
           confirmButtonText: 'OK',
         });
+        window.location.
 
       })
       .catch(error => {
