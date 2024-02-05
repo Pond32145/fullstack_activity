@@ -165,57 +165,7 @@ app.patch('/api/update/:id', jsonParser, (req, res) => {
 })
 
 
-// app.put('/update/:id', jsonParser, (req, res, next) => {
-//     try {
-//         const id = req.params.id;
 
-//         if (req.body.password) {
-//             // ถ้ามีการระบุรหัสผ่านใหม่
-//             const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
-//             updateWithPassword(id, hashedPassword, req.body);
-//         } else {
-//             // ถ้าไม่มีการระบุรหัสผ่านใหม่
-//             updateWithoutPassword(id, req.body);
-//         }
-
-//         res.json({ status: 'ok' });
-//     } catch (error) {
-//         res.json({ status: 'error', message: error.message });
-//     }
-// });
-
-// function updateWithPassword(id, hashedPassword, userData) {
-//     connect.execute(
-//         'UPDATE user SET username=?, password=?, fname=?, lname=?, section=?, role=? WHERE id=?',
-//         [userData.username, hashedPassword, userData.fname, userData.lname, userData.section, 'student', id],
-//         (err, results, fields) => {
-//             if (err) {
-//                 throw new Error(err);
-//             }
-//         }
-//     );
-// }
-
-// function updateWithoutPassword(id, userData) {
-//     connect.execute(
-//         'UPDATE user SET username=?, fname=?, lname=?, section=?, role=? WHERE id=?',
-//         [userData.username, userData.fname, userData.lname, userData.section, 'student', id],
-//         (err, results, fields) => {
-//             if (err) {
-//                 throw new Error(err);
-//             }
-//         }
-//     );
-// }
-
-
-//   app.get('/api/user1', (req, res) => {
-//     const query = 'SELECT * FROM user '; // เรียกดูข้อมูลเพียงหนึ่งแถว
-//     connect.query(query, (error, results, fields) => {
-//       if (error) throw error;
-//       res.json(results[0]); // ส่งข้อมูลเพียงหนึ่งแถวกลับไป
-//     });
-//   });
 
 
 
@@ -273,47 +223,8 @@ app.post('/actcode', jsonParser, function (req, res) {
     );
 });
 
-//   app.get('/check', function (req, res) {
-//     const actCodeParam = req.query.actCode;
 
-//     if (!actCodeParam) {
-//       return res.status(400).json({ error: 'actCode is required in the query parameters' });
-//     }
 
-//     connect.execute(
-//       'SELECT actname.*, actcode.act_Code FROM actname INNER JOIN actcode ON actname.act_Name=actcode.act_Name WHERE act_Code = ?',
-//       [actCodeParam],
-//       function (errS, resultsS) {
-//         if (errS) {
-//           console.error('Error querying the database:', errS);
-//           res.status(500).json({ error: 'Internal Server Error' });
-//         } else {
-//           console.log("Join activity successfully");
-
-//           // เพิ่มตรวจสอบก่อนที่จะอ้างถึง 'act_Code'
-//           const DactCodeParam = resultsS[0] && resultsS[0].act_Code;
-
-//           // เพิ่มการตรวจสอบว่า DactCodeParam มีค่าหรือไม่
-//           if (DactCodeParam) {
-//             connect.execute('DELETE FROM actcode WHERE act_Code = ?',
-//               [DactCodeParam],
-//               function (errD, resultsD) {
-//                 if (errD) {
-//                   console.error('Error deleting from the database:', errD);
-//                   res.status(500).json({ error: 'Internal Server Error' });
-//                 } else {
-//                   console.log("Deleting Successfully");
-//                   res.json(resultsD);
-//                 }
-//               });
-//           } else {
-//             console.error('DactCodeParam is undefined or null');
-//             res.status(500).json({ error: 'Internal Server Error' });
-//           }
-//         }
-//       }
-//     );
-//   });
 app.get('/api/activity', (req, res) => {
     connect.query('SELECT * FROM actname', (err, results) => {
         if (err) {
@@ -324,6 +235,50 @@ app.get('/api/activity', (req, res) => {
         res.json(results);
     });
 });
+
+app.post('/add_activity', (req, res) => {
+    const { activityCode, activityName, cardCode } = req.body;
+  
+    // Check if the activity code exists in the database
+    const checkActivityQuery = `SELECT * FROM act_std WHERE activityCode = ?`;
+  
+    connect.query(checkActivityQuery, [activityCode], (err, results) => {
+      if (err) {
+        console.error('Error checking activity:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+        return;
+      }
+  
+      if (results.length > 0) {
+        // Activity code exists, delete from the original table
+        const deleteQuery = `DELETE FROM act_std WHERE activityCode = ?`;
+  
+        connect.query(deleteQuery, [activityCode], (deleteErr, deleteResults) => {
+          if (deleteErr) {
+            console.error('Error deleting activity:', deleteErr);
+            res.status(500).json({ error: 'Internal Server Error' });
+            return;
+          }
+  
+          // Insert into the new table
+          const insertQuery = `INSERT INTO new_table_name (activityCode, activityName, cardCode) VALUES (?, ?, ?)`;
+  
+          connect.query(insertQuery, [activityCode, activityName, cardCode], (insertErr, insertResults) => {
+            if (insertErr) {
+              console.error('Error inserting activity:', insertErr);
+              res.status(500).json({ error: 'Internal Server Error' });
+              return;
+            }
+  
+            res.status(200).json({ message: 'Activity added successfully' });
+          });
+        });
+      } else {
+        res.status(404).json({ error: 'Activity code not found' });
+      }
+    });
+  });
+  
 
 app.listen(3333, jsonParser, function () {
     console.log('CORS-enabled web server listening on port 3333')

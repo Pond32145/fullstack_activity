@@ -1,6 +1,18 @@
+import { useEffect, useState } from "react";
 
 
 function Add_Activty() {
+
+    const [activities, setActivities] = useState([]);
+    const [selectedActivity, setSelectedActivity] = useState('');
+
+    useEffect(() => {
+        fetch('http://localhost:3333/api/activity')
+            .then(response => response.json())
+            .then(data => setActivities(data))
+            .catch(error => console.error('Error fetching activities:', error));
+    }, []);
+
     return (
         <div>
             <div className="flex items-center gap-2 ml-1 mb-5">
@@ -13,19 +25,31 @@ function Add_Activty() {
                 <h3 className="text-2xl">กรอกข้อมูลกิจกรรม</h3>
             </div>
 
-            <p className='text-xs text-red-500'>ให้นักศึกษากรอกข้อมูลรหัสกิจกรรม 8 หลักในบัตรกิจกรรมเพื่อยืนยันการเข้าร่วมกิจกรรม (รหัสบัตรกิจกรรมสามารถใช้ได้เพียงครั้งเดียวเท่านั้น)</p>
+            <p className='text-xs lg:text-base  text-red-500'>ให้นักศึกษากรอกข้อมูลรหัสกิจกรรม 8 หลักในบัตรกิจกรรมเพื่อยืนยันการเข้าร่วมกิจกรรม (รหัสบัตรกิจกรรมสามารถใช้ได้เพียงครั้งเดียวเท่านั้น)</p>
             <br />
             <form className='grid grid-cols-1 gap-2'>
                 <div className='grid md:grid-cols-2 gap-2 items-center'>
-                    <label htmlFor="" className='text-base'>เลือกกิจกรรมที่ต้องการยืนยันการลงทะเบียน</label>
-                    <input type="text" className='border ' /> {/*ต้องเป็น dropdown ในการเลือกกิจกรรมดึงข้อมูลมาจาก db  */}
+                    <label htmlFor="activity" className='md:text-lg text-base'>กิจกรรมที่ต้องการยืนยันการลงทะเบียน</label>
+                    <select
+                        id="activity"
+                        className='border'
+                        value={selectedActivity}
+                        onChange={(e) => setSelectedActivity(e.target.value)}
+                    >
+                        <option value="" disabled className="text-center">----- เลือกกิจกรรมที่ต้องการยืนยัน -----</option>
+                        {activities.map(activity => (
+                            <option key={activity.act_ID} value={activity.act_ID} className="text-center">
+                                {activity.act_Name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className='grid md:grid-cols-2 gap-2 items-center'>
-                    <label htmlFor="" className='text-base'>กรอกรหัสบัตรกิจกรรม</label>
-                    <input type="text" className='border ' />
+                    <label htmlFor="" className='md:text-lg text-base '>กรอกรหัสบัตรกิจกรรม</label>
+                    <input type="text" className='border text-center' />
                 </div>
                 <div className='w-full flex justify-center mt-5'>
-                    <button type='submit' className='bg-lime-500 w-fit p-1 rounded-md text-white'>ยืนยันการเข้าร่วมกิจกรรม</button>
+                    <button type='submit' className='bg-lime-500 w-fit p-3 rounded-md text-white text-base md:text-lg'>ยืนยันการเข้าร่วมกิจกรรม</button>
                 </div>
 
             </form>

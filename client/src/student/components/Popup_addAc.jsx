@@ -32,7 +32,7 @@ class Popup extends Component {
                         </svg>
                     </div>
                 </button>
-                <Modal visible={this.state.visible} width="700" height="350" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <Modal visible={this.state.visible} width="700" height="370" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="md:p-8 p-4 flex justify-center items-center md:mt-5">
                         <Add_activity />
                     </div>
