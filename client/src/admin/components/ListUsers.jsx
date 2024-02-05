@@ -22,7 +22,7 @@ const ProductTable = () => {
       console.log(err);
     }
   };
-  
+
 
 
 
@@ -132,22 +132,25 @@ const ProductTable = () => {
             {/* ... ส่วนหัวตาราง ... */}
             <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 flex w-full">
               <tr className="flex w-full">
-                <th scope="col" className="px-6 py-3 w-1/6">
+                <th scope="col" className="px-6 py-3 w-1/12">
+
+                </th>
+                <th scope="col" className="px-6 py-3 w-2/12">
                   รหัสนักศึกษา
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/6">
+                <th scope="col" className="px-6 py-3 w-2/12">
                   ชื่อ
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/6">
+                <th scope="col" className="px-6 py-3 w-2/12">
                   นามสกุล
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/6">
+                <th scope="col" className="px-6 py-3 w-2/12">
                   หมู่เรียน
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/6">
+                <th scope="col" className="px-6 py-3 w-2/12">
                   บทบาท
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/6 text-center">
+                <th scope="col" className=" -ml-6 pr-12 py-3 w-2/12 text-center">
                   ดูเพิ่มเติม
                 </th>
               </tr>
@@ -156,36 +159,34 @@ const ProductTable = () => {
               {visibleItems.map((item) => (
                 <tr key={item.username} className="border-b-2 flex w-full items-center">
 
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-1/12 text-center">
+                    <Link to={{ pathname: `/admin/update` }} onClick={() => userParams(item)}>
+                      <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-l">
+                        <div>
+                          <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="15" height="15"><path d="M9,12c-3.309,0-6-2.691-6-6S5.691,0,9,0s6,2.691,6,6-2.691,6-6,6Zm4.27,7.48c-.813,.813-1.27,1.915-1.27,3.065v1.455h1.455c1.15,0,2.252-.457,3.065-1.27l6.807-6.807c.897-.897,.897-2.353,0-3.25-.897-.897-2.353-.897-3.25,0l-6.807,6.807Zm-3.27,3.065c0-1.692,.659-3.283,1.855-4.479l2.376-2.376c-1.476-1.06-3.279-1.691-5.231-1.691C4.038,14,0,18.038,0,23c0,.552,.448,1,1,1H10v-1.455Z" /></svg>
+                        </div>
+                      </button>
+                    </Link>
+                  </td>
+                  <td scope="col" className="px-6 py-3 w-2/12">
                     {item.username}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-2/12">
                     {item.fname}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-2/12">
                     {item.lname}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-2/12">
                     {item.section}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6">
+                  <td scope="col" className="px-6 py-3 w-1/12">
                     {item.role}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/6 text-center">
-                    <div className="inline-flex">
-
-                      <Link to={{ pathname: `/admin/update` }} onClick={() => userParams(item)}>
-                        <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-l">
-                          แก้ไขประวัติส่วนตัว
-                        </button>
-                      </Link>
-
-
-
-                      <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-r">
-                        DEL
-                      </button>
-                    </div>
+                  <td scope="col" className="ml-10  py-3 w-2/12 text-center">
+                    <button className="bg-cyan-400 hover:bg-cyan-500 px-2 py-1 text-white rounded">
+                  ตรวจสอบกิจกรรม
+                  </button>
                   </td>
                 </tr>
               ))}
