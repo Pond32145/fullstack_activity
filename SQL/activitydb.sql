@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2024 at 05:02 PM
+-- Generation Time: Feb 10, 2024 at 08:01 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -118,7 +118,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `password`, `fname`, `lname`, `section`, `role`, `tel`, `birthdate`, `address`, `district`, `province`, `tumbons`, `zipcode`) VALUES
-('644230001', '$2b$10$LJ63UQn5S0Tno66MoLIn9e8ZTkzo9351JkpvFd2SZnoDoCMM0Vvg6', 'กรกฎา', 'เปรมกิจ', '64/38', 'student', '0987654321', '2024-01-02', '12/3', 'บางบ่อ', 'สมุทรปราการ', '', '10560'),
+('644230001', '$2b$10$LJ63UQn5S0Tno66MoLIn9e8ZTkzo9351JkpvFd2SZnoDoCMM0Vvg6', 'กรกฎา', 'เปรมกิจ', '64/38', 'student', '098765222', '2024-01-03', '12/32', 'กบินทร์บุรี', 'ปราจีนบุรี', 'หนองกี่', '25110'),
 ('644230006', '$2b$10$cRLGPFKte9evpFO9oov5MuZc9ZiS9opM9R7R32YC3EehKU3hmr3ty', 'จรัสย์', 'สืบบูรพากุล', '64/38', 'student', '0707070', '2024-02-12', '213', 'บางพลี', 'สมุทรปราการ', 'บางแก้ว', '10540'),
 ('644230007', '$2b$10$dxgcHPJRMmCqzq1TJtQSmuxujVeL475ssNcKDiTJ3pL/vh//2EYKe', 'ชุติวัต', 'ขำสาคร', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, '', NULL),
 ('644230009', '$2b$10$OimvyYirSfLI0U3bXdC7FeIh0m0bQyVcE7Q8zNu9QGb0MrNulIzSu', 'ณภัทร', 'ลอนุ', '64/38', 'student', NULL, NULL, NULL, NULL, NULL, '', NULL),
