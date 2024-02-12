@@ -36,34 +36,37 @@ const StudentForm = () => {
     child,
     childsId = [],
     setChilds = [],
-    valuePD
+    addressValue_PDS
   }) => {
     const onChangeHandleLocal = (event) => {
       setChilds.forEach((setChild) => setChild([]));
       const entries = childsId.map((child) => [child, undefined]);
       const unSelectChilds = Object.fromEntries(entries);
-
+  
       const input = event.target.value;
       const dependId = input ? Number(input) : undefined;
       setSelected((prev) => ({ ...prev, ...unSelectChilds, [id]: dependId }));
-
+  
       if (!input) return;
-
+  
       if (child) {
-        const parent = list.find(((item) => item.id === dependId));
-        const { [child]: childs } = parent;
-        const [setChild] = setChilds;
-        setChild(childs);
+        const parent = list.find((item) => item.id === dependId);
+        if (parent) {
+          const { [child]: childs } = parent;
+          const [setChild] = setChilds;
+          setChild(childs);
+        }
       }
-
+  
       const selectedValue = list.find((item) => item.id === dependId)?.name_th || '';
       onChangeHandle(id, selectedValue);
     };
-
+  
     return (
       <>
-        <select value={selected[id] ?? valuePD} onChange={onChangeHandleLocal} className="mt-1 p-2 border w-full rounded-md">
-          <option label={valuePD} />
+        <select value={selected[id]} onChange={onChangeHandleLocal} className="mt-1 p-2 border w-full rounded-md">
+          <option key={selected[id]} value={selected[id]} label={addressValue_PDS} />
+  
           {list &&
             list.map((item) => (
               <option
@@ -78,6 +81,8 @@ const StudentForm = () => {
       </>
     );
   };
+  
+  
 
 
 
@@ -117,7 +122,7 @@ const StudentForm = () => {
         setBirthdateValue(data.birthdate);
         setAddressValue(data.address);
         setDistrictValue(data.district);
-        setTumnonsValue(data.tumbons);
+        setTumbonsValue(data.tumbons);
         setProvinceValue(data.province);
         setZipcodeValue(data.zipcode);
       })
@@ -126,19 +131,30 @@ const StudentForm = () => {
       });
 
 
-    (() => {
       fetch(
         "https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province_with_amphure_tambon.json"
       )
         .then((response) => response.json())
         .then((result) => {
-          setProvinces(result);
-          console.log(result);
-        });
-    })();
+          // Sort the provinces alphabetically by name_th
+          const sortedProvinces = result.sort((a, b) =>
+            a.name_th.localeCompare(b.name_th)
 
-  }, []);
-  // ว่างเพื่อให้ useEffect ทำงานเพียงครั้งเดียวหลังจากคอมโพเนนต์นี้ถูกตรงกัน
+          );
+
+
+          
+
+          console.log(sortedProvinces);
+          setProvinces(sortedProvinces);
+        });
+
+
+
+
+      
+
+  }, [userParams]);
 
 
 
@@ -175,7 +191,7 @@ const StudentForm = () => {
 
   const updateClick = (event) => {
     event.preventDefault();
-
+  
     const dataJson = {
       fname: fnameValue,
       lname: lnameValue,
@@ -188,7 +204,7 @@ const StudentForm = () => {
       province: provinceValue,
       zipcode: zipcode,
     };
-
+  
     fetch('http://localhost:3333/api/update/' + userParams, {
       method: 'PATCH',
       headers: {
@@ -196,30 +212,35 @@ const StudentForm = () => {
       },
       body: JSON.stringify(dataJson),
     })
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        Swal.fire({
-          title: 'Update Successfully',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
-        setTimeout(() => {
-          window.location = '/admin/dashboard'; // รีเฟรชหน้าจอ
-        }, 1500); // ล่าช้าการรีเฟรชให้เกิดชั่วโมง 2 วินาที
-
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Oops...something went wrong!!',
-          icon: 'error',
-          text: 'Error occurred!',
-          confirmButtonText: 'OK',
-        });
-        console.error('Error:', error);
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+   })
+   .then(result => {
+      console.log(result);
+      Swal.fire({
+        title: 'Update Successfully',
+        icon: 'success',
+        confirmButtonText: 'OK',
       });
+      setTimeout(() => {
+        window.location = '/activity/dashboard';
+      }, 1500);
+   })
+   .catch(error => {
+      console.error('Error:', error);
+      Swal.fire({
+        title: 'Oops...something went wrong!',
+        icon: 'error',
+        text: `Error occurred! ${error.message}`,
+        confirmButtonText: 'OK',
+      });
+   });
+   
   };
-
+  
 
 
 
@@ -229,7 +250,7 @@ const StudentForm = () => {
   return (
 
     <div className="w-full lg:w-2/3 mx-auto mt-10 p-4 bg-white shadow-md rounded-md">
-      <Link to='/admin/dashboard'>
+      <Link to='/activity/dashboard'>
         <div className="items-center mb-5"><ArrowBackIosNewIcon />ย้อนกลับ</div>
       </Link>
       <form className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:px-10">
@@ -247,6 +268,18 @@ const StudentForm = () => {
             className="mt-1 p-2 border w-full rounded-md" />
         </div>
 
+        <div className="mb-4">
+          <label htmlFor="classGroup" className="block text-sm font-medium text-gray-600">
+            หมู่เรียน
+          </label>
+          <input
+            type="text"
+            id="section"
+            name="section"
+            onChange={updateSection}
+            value={sectionValue}
+            className="mt-1 p-2 border w-full rounded-md" />
+        </div>
 
         <div className="mb-4">
           <label htmlFor="firstName" className="block text-sm font-medium text-gray-600">
@@ -271,19 +304,6 @@ const StudentForm = () => {
             name="lname"
             onChange={updateLname}
             value={lnameValue}
-            className="mt-1 p-2 border w-full rounded-md" />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="classGroup" className="block text-sm font-medium text-gray-600">
-            หมู่เรียน
-          </label>
-          <input
-            type="text"
-            id="section"
-            name="section"
-            onChange={updateSection}
-            value={sectionValue}
             className="mt-1 p-2 border w-full rounded-md" />
         </div>
 
@@ -334,7 +354,7 @@ const StudentForm = () => {
             list={provinces}
             child="amphure"
             childsId={["amphure_id", "tambon_id"]}
-            valuePD={provinceValue}
+            addressValue_PDS={provinceValue}
             setChilds={[setAmphures, setTambons]}
           />
         </div>
@@ -349,7 +369,7 @@ const StudentForm = () => {
             child="tambon"
             childsId={["tambon_id"]}
             setChilds={[setTambons]}
-            valuePD={districtsValue}
+            addressValue_PDS={districtsValue}
           />
         </div>
 
@@ -363,7 +383,7 @@ const StudentForm = () => {
             child="zip_code"
             childsId={["zip_code"]}
             setChilds={[setZipcode]}
-            valuePD={tumbonsValue}
+            addressValue_PDS={tumbonsValue}
           />
         </div>
 

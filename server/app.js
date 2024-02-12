@@ -147,22 +147,22 @@ app.get('/api/user', (req, res) => {
 
 app.patch('/api/update/:id', jsonParser, (req, res) => {
     const { id } = req.params;
-    const { fname, lname, section, tel, birthdate, address, district, province,tumbons, zipcode } = req.body;
+    const { fname, lname, section, tel, birthdate, address, district, province, tumbons, zipcode } = req.body;
 
-    connect.execute('UPDATE user SET fname = ?, lname = ?, section = ?, tel = ?, birthdate = ?, address = ?, district = ?, province = ?,tumbons = ?, zipcode = ? WHERE username = ?',
-        [fname, lname, section, tel, birthdate, address, district, province,tumbons, zipcode, id],
+    connect.execute('UPDATE user SET fname = ?, lname = ?, section = ?, tel = ?, birthdate = ?, address = ?, district = ?, province = ?, tumbons = ?, zipcode = ? WHERE username = ?',
+        [fname, lname, section, tel, birthdate, address, district, province, tumbons, zipcode, id],
         (err, result) => {
             if (err) {
                 console.error('Error querying MySQL:', err);
-                res.status(500).send('Internal Server Error');
+                res.status(500).send('Internal Server Error: ' + err.message); // Send error details to the client
                 return;
             } else {
                 res.json(result);
                 console.log('Update successfully');
-
             }
         });
-})
+});
+
 
 
 
