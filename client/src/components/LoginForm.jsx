@@ -29,7 +29,7 @@ export default function SignInSide() {
                         window.location = '/teacher/calendar'; // Redirect to teacher dashboard
                     } else {
                         localStorage.setItem('userParams', jsonData.username)
-                        window.location = '/activity/dashboard'; // Redirect to user dashboard
+                        window.location = '/activity/calendar'; // Redirect to user dashboard
                     }
                 } else {
                     alert('login failed');

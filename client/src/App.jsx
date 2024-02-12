@@ -1,6 +1,6 @@
 
 import CalendarFull from './components/Calendar'
-import Login from './pages/Login'
+import Layout from './components/Layout/Layout'
 
 // import Loading from './components/Loading'
 
@@ -8,9 +8,9 @@ function App() {
 
 
   return (
-    <>
+    <div>
       <CalendarFull />
-    </>
+    </div>
   )
 }
 

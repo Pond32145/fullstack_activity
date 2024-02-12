@@ -1,9 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../images/IT_logo_Standard.png';
 import Logout from '../../components/Logout';
 
 const Header = () => {
+  const [username, setUsername] = useState('');
+  // const [fnameValue, setFnameValue] = useState();
+
+  const userParams = localStorage.getItem('userParams');
+
+  useEffect(() => {
+    // กำหนด URL ของ API ที่สร้างด้วย Node.js
+    const apiUrl = 'http://localhost:3333/api/userO?id=';  // ปรับ URL ตามที่คุณใช้
+
+    // ทำ HTTP request ด้วย fetch 
+    fetch(apiUrl + userParams)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data)
+        setUsername(data.username)
+        // setFnameValue(data.fnameValue);
+
+
+      })
+      .catch(error => {
+        console.error('เกิดข้อผิดพลาด: ', error);
+      });
+
+  }, [userParams]);
+
+
   const [selectedItem, setSelectedItem] = useState('ปฏิทินกิจกรรม');
   const [isListVisible, setListVisible] = useState(false);
 
@@ -33,24 +64,26 @@ const Header = () => {
           </div>
           <ul className="hidden md:flex flex-auto space-x-2 items-center justify-center">
 
-            <Link to='/activity/dashboard'>
-              <li onClick={() => handleItemClick('listStudent')}
-                className={getItemClass('listStudent')}>Dashboard</li>
+            <Link to='/activity/calendar'>
+              <li onClick={() => handleItemClick('Calendar')}
+                className={getItemClass('Calendar')}>หน้าแรก</li>
             </Link>
-
 
             <Link to='/activity/profile'>
               <li onClick={() => handleItemClick('Profile')}
                 className={getItemClass('Profile')}>ประวัติส่วนตัว</li>
             </Link>
 
-            <Link to='/activity/calendar'>
-              <li onClick={() => handleItemClick('Calendar')}
-                className={getItemClass('Calendar')}>ปฏิทินกิจกรรม</li>
+            <Link to='/activity/dashboard'>
+              <li onClick={() => handleItemClick('listStudent')}
+                className={getItemClass('listStudent')}>กิจกรรม</li>
             </Link>
 
           </ul>
-          <Logout />
+          <div className='flex items-center gap-5'>
+            <p className='hidden md:block'>{username}</p>
+            <Logout className='block md:hidden' />
+          </div>
 
         </nav>
 
@@ -67,15 +100,15 @@ const Header = () => {
 
           <div className="relative">
             <ul id="list" className={`relative font-normal text-base leading-4 top-2 w-full rounded shadow-md transition-all duration-700 ${isListVisible ? 'opacity-100 max-h-40' : 'opacity-0 max-h-0 hidden'}`}>
-              <Link to='/teacher/calendar'>
+              <Link to='/activity/calendar'>
                 <li onClick={() => handleItemClick('ปฏิทินกิจกรรม')}
                   className={getItemClassXs('Calendar')}>ปฏิทินกิจกรรม</li>
               </Link>
-              <Link to='/teacher/liststudent'>
+              <Link to='/activity/liststudent'>
                 <li onClick={() => handleItemClick('รายชื่อนักศึกษา')}
                   className={getItemClassXs('listStudent')}>รายชื่อนักศึกษา</li>
               </Link>
-              <Link to='/teacher/profile'>
+              <Link to='/activity/profile'>
                 <li onClick={() => handleItemClick('ประวัติส่วนตัว')}
                   className={getItemClassXs('Profile')}>ประวัติส่วนตัว</li>
               </Link>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App.jsx';
 import './index.css';
+import Layoutm from './components/Layout/Layout.jsx';
 
 import Layout from './student/components/Layout.jsx';
 import DashUser from './student/pages/Dashboard.jsx';
@@ -29,7 +30,9 @@ import Login from './pages/Login.jsx';
 const AppRouter = () => (
   <Router>
     <Routes>
+      <Route path="/" element={<Layoutm />} >
       <Route path="/" element={<App />} />
+      </Route>
       <Route path="/login" element={<Login />} />
 
       <Route path="/admin" element={<LayoutA />}>

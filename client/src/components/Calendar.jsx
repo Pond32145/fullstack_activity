@@ -24,6 +24,7 @@ function CalendarFull() {
           start: moment(item.start_Date).toDate(),
           end: moment(item.end_Date).toDate(),
           title: item.act_Name,
+          location: item.location,
           color: index % 3 === 0 ? 'blue' : index % 3 === 1 ? 'green' : 'red',
         }));
 
@@ -59,7 +60,7 @@ function CalendarFull() {
   };
 
   return (
-    <div className="App w-3/4 mx-auto my-10 bg-slate-100 rounded-lg shadow-xl p-10">
+    <div className="App w-3/4 mx-auto my-10 bg-slate-50 rounded-lg shadow-xl p-10">
       <h1 className="text-center text-3xl font-bold mb-5">ปฏิทินกิจกรรม</h1>
 
       <Calendar
@@ -67,7 +68,7 @@ function CalendarFull() {
         defaultDate={new Date()}
         defaultView="month"
         events={events}
-        style={{ height: "60vh" }}
+        style={{ height: "50vh" }}
         eventPropGetter={eventStyleGetter}
         onSelectEvent={handleEventClick}
       />
@@ -81,6 +82,7 @@ function CalendarFull() {
         <div className="text-left -mt-5">
             <h2 className="text-xl font-bold mb-4">รายละเอียดกิจกรรม</h2>
             <p className="text-xl">ชื่อกิจกรรม : {selectedEvent.title}</p>
+            <p>สถานที่ : {selectedEvent.location}</p>
             <p>เริ่มวันที่ : {selectedEvent.start.toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" })}</p>
             <p>สิ้นสุดวันที่ : {selectedEvent.end.toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" })}</p>
             <div className="text-end">
