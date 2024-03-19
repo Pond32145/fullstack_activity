@@ -23,11 +23,18 @@ app.use(cors())
 const mysql = require('mysql2');
 // create the connection to database
 const connect = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'activitydb',
+    host: 'b85dyakftcigpk6daezs-mysql.services.clever-cloud.com',
+    user: 'uxbflralnjtel8t7',
+    password: 'VNOEtO9c2GYJJMbuzjsx',
+    database: 'b85dyakftcigpk6daezs',
 });
+
+// const connect = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '',
+//     database: 'activitydb',
+// });
 
 
 
