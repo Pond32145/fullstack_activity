@@ -20,14 +20,11 @@ const StudentForm = () => {
   const onChangeHandle = (id, selectedValue) => {
     if (id === "province_id") {
       setProvinceValue(selectedValue);
-
     } else if (id === "amphure_id") {
       setDistrictValue(selectedValue);
+    } else if (id === "tambon_id") {
+      setSubdistrictValue(selectedValue);
     }
-    else if (id === "tambon_id") {
-      setTumbonsValue(selectedValue);
-    }
-
   };
 
   const DropdownList = ({
@@ -67,8 +64,7 @@ const StudentForm = () => {
         <select value={selected[id]} onChange={onChangeHandleLocal} className="mt-1 p-2 border w-full rounded-md">
           <option key={selected[id]} value={selected[id]} label={addressValue_PDS} />
   
-          {list &&
-            list.map((item) => (
+          {list && list.map((item) => (
               <option
                 key={item.id}
                 value={item.id}
@@ -83,19 +79,16 @@ const StudentForm = () => {
   };
   
   
-
-
-
   const [username, setUsername] = useState('');
   const [fnameValue, setFnameValue] = useState();
   const [lnameValue, setLnameValue] = useState('');
   const [sectionValue, setSectionValue] = useState('');
-  const [telValue, setTelValue] = useState('');
-  const [birthdateValue, setBirthdateValue] = useState('');
+  const [mobileValue, setMobileValue] = useState('');
+  const [emailValue, setEmailValue] = useState('');
   const [addressValue, setAddressValue] = useState('');
   const [provinceValue, setProvinceValue] = useState('');
   const [districtsValue, setDistrictValue] = useState('');
-  const [tumbonsValue, setTumbonsValue] = useState('');
+  const [subdistrictsValue, setSubdistrictValue] = useState('');
   const [zipcodeValue, setZipcodeValue] = useState('');
 
   const userParams = localStorage.getItem('userParams');
@@ -114,15 +107,15 @@ const StudentForm = () => {
       })
       .then(data => {
         console.log(data)
-        setUsername(data.username)
-        setFnameValue(data.fname);
-        setLnameValue(data.lname);
-        setSectionValue(data.section);
-        setTelValue(data.tel);
-        setBirthdateValue(data.birthdate);
-        setAddressValue(data.address);
+        setUsername(data.login_ID)
+        setFnameValue(data.std_fname);
+        setLnameValue(data.std_lname);
+        setSectionValue(data.sec_ID);
+        setMobileValue(data.std_mobile);
+        setEmailValue(data.std_email);
+        setAddressValue(data.std_address);
+        setSubdistrictValue(data.subdistrict);
         setDistrictValue(data.district);
-        setTumbonsValue(data.tumbons);
         setProvinceValue(data.province);
         setZipcodeValue(data.zipcode);
       })
@@ -141,6 +134,10 @@ const StudentForm = () => {
             a.name_th.localeCompare(b.name_th)
 
           );
+
+          const idProvince = sortedProvinces.map(province => [province.id, province.name_th]);
+
+          console.log(idProvince);
 
 
           
@@ -167,11 +164,11 @@ const StudentForm = () => {
   const updateSection = (event) => {
     setSectionValue(event.target.value);
   }
-  const updateTel = (event) => {
-    setTelValue(event.target.value);
+  const updateMobile = (event) => {
+    setMobileValue(event.target.value);
   }
-  const updateBirthdate = (event) => {
-    setBirthdateValue(event.target.value);
+  const updateEmail = (event) => {
+    setEmailValue(event.target.value);
   }
   const updateAddress = (event) => {
     setAddressValue(event.target.value);
@@ -191,12 +188,12 @@ const StudentForm = () => {
       fname: fnameValue,
       lname: lnameValue,
       section: sectionValue,
-      tel: telValue,
-      birthdate: birthdateValue,
+      mobile: mobileValue,
+      email: emailValue,
       address: addressValue,
-      district: districtsValue,
-      tumbons: tumbonsValue,
       province: provinceValue,
+      district: districtsValue,
+      subdistrict: subdistrictsValue,
       zipcode: zipcode,
     };
   
@@ -236,8 +233,6 @@ const StudentForm = () => {
    
   };
   
-
-
 
   if (!username) {
     return <div>Loading...</div>;
@@ -310,21 +305,21 @@ const StudentForm = () => {
             type="tel"
             id="tel"
             name="tel"
-            onChange={updateTel}
-            value={telValue}
+            onChange={updateMobile}
+            value={mobileValue}
             className="mt-1 p-2 border w-full rounded-md" />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="birthdate" className="block text-sm font-medium text-gray-600">
-            วันเกิด
+          <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+            อีเมลล์
           </label>
           <input
-            type="date"
-            id="birthdate"
-            name="birthdate"
-            onChange={updateBirthdate}
-            value={birthdateValue}
+            type="email"
+            id="email"
+            name="email"
+            onChange={updateEmail}
+            value={emailValue}
             className="mt-1 p-2 border w-full rounded-md" />
         </div>
 
@@ -378,7 +373,7 @@ const StudentForm = () => {
             child="zip_code"
             childsId={["zip_code"]}
             setChilds={[setZipcode]}
-            addressValue_PDS={tumbonsValue}
+            addressValue_PDS={subdistrictsValue}
           />
         </div>
 
@@ -395,11 +390,9 @@ const StudentForm = () => {
             value={zipcode ?? zipcodeValue}
             className="mt-1 p-2 border w-full rounded-md" />
         </div>
-
-        <br />
-
-        <div className="flex justify-end">
-          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={updateClick}>
+        
+        <div className="flex justify-end items-center">
+          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 w-1/8 h-1/2" onClick={updateClick}>
             แก้ไข
           </button>
         </div>

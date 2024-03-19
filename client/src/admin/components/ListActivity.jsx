@@ -45,9 +45,8 @@ const ProductTable = () => {
 
   const filteredItems = activity.filter((item) => {
     return (
-      item.act_Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.start_Date.toLowerCase().includes(searchTerm.toLowerCase())
+      item.act_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.act_location.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -125,16 +124,28 @@ const ProductTable = () => {
                   ลำดับ
                 </th>
                 <th scope="col" className="px-6 py-3 w-3/12 text-left">
+                  รหัสกิจกรรม
+                </th>
+                <th scope="col" className="px-6 py-3 w-3/12 text-left">
                   ชื่อกิจกรรม
+                </th>
+                <th scope="col" className="px-6 py-3 w-2/12">
+                  จำนวน
                 </th>
                 <th scope="col" className="px-6 py-3 w-3/12 text-left">
                   สถานที่
                 </th>
                 <th scope="col" className="px-6 py-3 w-3/12">
-                  วันจัดกิจกรรม
+                  วันเริ่ม
                 </th>
-                <th scope="col" className="px-6 py-3 w-2/12">
-                  จำนวน
+                <th scope="col" className="px-6 py-3 w-3/12">
+                  วันสิ้นสุด
+                </th>
+                <th scope="col" className="px-6 py-3 w-3/12">
+                  สถานะ
+                </th>
+                <th scope="col" className="px-6 py-3 w-3/12">
+                  รายละเอียดกิจกรรม
                 </th>
 
               </tr>
@@ -147,19 +158,30 @@ const ProductTable = () => {
                    {index + 1}
                   </td>
                   <td scope="col" className="px-6 py-3 w-3/12 text-left">
-                    {item.act_Name}
+                    {item.act_ID}
                   </td>
                   <td scope="col" className="px-6 py-3 w-3/12 text-left">
-                  {item.location}
+                    {item.act_title}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-3/12">
-                    {item.start_Date.slice(0, 10)}
+                  <td scope="col" className="px-6 py-3 w-3/12 text-left">
+                  {item.act_numStd}
                   </td>
-                  <td scope="col" className="px-6 py-3 w-2/12">
-                    {item.amount}
+                  <td scope="col" className="px-6 py-3 w-3/12 text-left">
+                  {item.act_location}
                   </td>
-
-
+                  { <td scope="col" className="px-6 py-3 w-3/12">
+                    {item.act_dateStart.slice(0, 10)}
+                  </td> }
+                  { <td scope="col" className="px-6 py-3 w-3/12">
+                    {item.act_dateEnd.slice(0, 10)}
+                  </td> }
+                  <td scope="col" className="px-6 py-3 w-3/12 text-left">
+                  {item.act_status}
+                  </td>
+                  <td scope="col" className="px-6 py-3 w-3/12 text-left hover:text-green-500">
+                      <a href="#">เพิ่มเติม</a>
+                      {/* เหลือรายละเอียดกิจกรรม แสดงรายชื่อนศ และข้อมูลทั้งหมด ลิ้งอีกหน้าs */}
+                  </td>
                 </tr>
               ))}
             </tbody>

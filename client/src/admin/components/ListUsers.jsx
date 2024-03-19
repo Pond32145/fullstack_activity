@@ -6,6 +6,8 @@ const ProductTable = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [users, setUsers] = useState([]);
+  const [sections, setSections] = useState([]);
+  const [roles, setRole] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(15); // จำนวนรายการต่อหน้า
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,16 +25,10 @@ const ProductTable = () => {
     }
   };
 
-
-
-
   const updateVisibleStartPage = (newCurrentPage) => {
     const newVisibleStartPage = Math.floor(newCurrentPage / 4) * 4;
     setVisibleStartPage(newVisibleStartPage);
   };
-
-
-
 
   useEffect(() => {
     fetch("http://localhost:3333/api/user")
@@ -47,7 +43,32 @@ const ProductTable = () => {
           setError(error);
         }
       );
+  
+    fetch("http://localhost:3333/getSection")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setSections(result); // Update state with fetched section data
+        },
+        (error) => {
+          setError(error);
+        }
+      );
+  
+    fetch("http://localhost:3333/login") // Fetch roles from the correct endpoint
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setRole(result); // Update state with fetched roles data
+        },
+        (error) => {
+          setError(error);
+        }
+      );
   }, []);
+  
+
+
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -56,10 +77,10 @@ const ProductTable = () => {
 
   const filteredItems = users.filter((item) => {
     return (
-      item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.fname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.lname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.section.toLowerCase().includes(searchTerm.toLowerCase())
+      item.std_ID.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.std_fname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.std_lname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.sec_ID.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -68,8 +89,16 @@ const ProductTable = () => {
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else {
+    // Map sec_ID to sec_name
+    const mappedUsers = users.map((user) => {
+      const section = sections.find((sec) => sec.sec_ID === user.sec_ID);
+      const userRole = roles.find((role) => role.username === user.username); // Find the corresponding role for the user
+      return { ...user, sec_name: section ? section.sec_name : "", role: userRole ? userRole.role : "" }; // Include the role in the mapped user object
+      
+    });
+    
     const lastPage = Math.ceil(filteredItems.length / itemsPerPage) - 1;
-    const visibleItems = filteredItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+    // const visibleItems = filteredItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
       <div className="mb-10 container mx-auto md:px-20">
@@ -132,9 +161,9 @@ const ProductTable = () => {
             {/* ... ส่วนหัวตาราง ... */}
             <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 flex w-full">
               <tr className="flex w-full">
-                <th scope="col" className="px-6 py-3 w-1/12">
+                {/* <th scope="col" className="px-6 py-3 w-1/12">
 
-                </th>
+                </th> */}
                 <th scope="col" className="px-6 py-3 w-2/12">
                   รหัสนักศึกษา
                 </th>
@@ -155,42 +184,35 @@ const ProductTable = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{ height: '50vh' }}>
-              {visibleItems.map((item) => (
-                <tr key={item.username} className="border-b-2 flex w-full items-center">
-
-                  <td scope="col" className="px-6 py-3 w-1/12 text-center">
-                    <Link to={{ pathname: `/admin/update` }} onClick={() => userParams(item)}>
-                      <button className="bg-gray-300 hover:bg-gray-400 text-xs text-gray-800 font-bold py-2 px-2 rounded-l">
-                        <div>
-                          <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="15" height="15"><path d="M9,12c-3.309,0-6-2.691-6-6S5.691,0,9,0s6,2.691,6,6-2.691,6-6,6Zm4.27,7.48c-.813,.813-1.27,1.915-1.27,3.065v1.455h1.455c1.15,0,2.252-.457,3.065-1.27l6.807-6.807c.897-.897,.897-2.353,0-3.25-.897-.897-2.353-.897-3.25,0l-6.807,6.807Zm-3.27,3.065c0-1.692,.659-3.283,1.855-4.479l2.376-2.376c-1.476-1.06-3.279-1.691-5.231-1.691C4.038,14,0,18.038,0,23c0,.552,.448,1,1,1H10v-1.455Z" /></svg>
-                        </div>
+            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between">
+              {mappedUsers.map((item) => {
+                return (
+                  <tr key={item.std_ID} className="border-b-2 flex w-full items-center">
+                    <td scope="col" className="px-6 py-3 w-2/12">
+                      {item.std_ID}
+                    </td>
+                    <td scope="col" className="px-6 py-3 w-2/12">
+                      {item.std_fname}
+                    </td>
+                    <td scope="col" className="px-6 py-3 w-2/12">
+                      {item.std_lname}
+                    </td>
+                    <td scope="col" className="px-6 py-3 w-2/12">
+                      {item.sec_name}
+                    </td>
+                    <td scope="col" className="px-6 py-3 w-2/12">
+                      {item.role}
+                    </td>
+                    <td scope="col" className="ml-10  py-3 w-2/12 text-center">
+                      <button className="bg-cyan-400 hover:bg-cyan-500 px-2 py-1 text-white rounded">
+                        ตรวจสอบกิจกรรม
                       </button>
-                    </Link>
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-2/12">
-                    {item.username}
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-2/12">
-                    {item.fname}
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-2/12">
-                    {item.lname}
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-2/12">
-                    {item.section}
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-1/12">
-                    {item.role}
-                  </td>
-                  <td scope="col" className="ml-10  py-3 w-2/12 text-center">
-                    <button className="bg-cyan-400 hover:bg-cyan-500 px-2 py-1 text-white rounded">
-                  ตรวจสอบกิจกรรม
-                  </button>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
+
           </table>
 
           <div className="flex items-center justify-between mt-4">

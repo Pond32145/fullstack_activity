@@ -1,25 +1,37 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const ProductTable = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [sections, setSections] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(15); // จำนวนรายการต่อหน้า
+  const [itemsPerPage, setItemsPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
+    // Fetch user data
     fetch("http://localhost:3333/api/user")
       .then((res) => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
-          // กรองข้อมูลที่มี role เป็น "student" เท่านั้น
-          const filteredItems = result.filter((item) => item.role === "student");
-          setItems(filteredItems);
+          setUsers(result); // Update state with fetched user data
         },
         (error) => {
           setIsLoaded(true);
+          setError(error);
+        }
+      );
+
+    // Fetch section data
+    fetch("http://localhost:3333/getSection")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setSections(result); // Update state with fetched section data
+        },
+        (error) => {
           setError(error);
         }
       );
@@ -27,31 +39,39 @@ const ProductTable = () => {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    setCurrentPage(0); // ตั้งค่าหน้าปัจจุบันเป็น 0 เมื่อมีการค้นหา
+    setCurrentPage(0);
   };
-
-  const filteredItems = items.filter((item) => {
-    return (
-      item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.fname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.lname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.section.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
 
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else {
+    // Map sec_ID to sec_name
+    const mappedUsers = users.map((user) => {
+      const section = sections.find((sec) => sec.sec_ID === user.sec_ID);
+      return { ...user, sec_name: section ? section.sec_name : "" };
+    });
+
+    const filteredItems = mappedUsers.filter((item) => {
+      return (
+        item.std_fname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.std_lname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.sec_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+
     const lastPage = Math.ceil(filteredItems.length / itemsPerPage) - 1;
-    const visibleItems = filteredItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+    const visibleItems = filteredItems.slice(
+      currentPage * itemsPerPage,
+      (currentPage + 1) * itemsPerPage
+    );
 
     return (
       <div className="mb-10 container mx-auto md:px-20">
-        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4">
+        <div className=" overflow-x-auto shadow-md sm:rounded-lg bg-white p-4 w-full">
 
-          <div className="text-lg font-bold mb-2">รายชื่อนักศึกษา</div>
+        <div className="text-lg font-bold mb-2">รายชื่อนักศึกษา</div>
           <div className="flex justify-between">
             <div className="pb-4 items-center">
               <label htmlFor="table-search" className="sr-only">
@@ -103,48 +123,49 @@ const ProductTable = () => {
             </div>
           </div>
 
-     
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            {/* ... ส่วนหัวตาราง ... */}
             <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 flex w-full">
               <tr className="flex w-full">
-                
-                <th scope="col" className="px-6 py-3 w-1/5">
+                <th scope="col" className="px-6 py-3 w-4/12">
                   รหัสนักศึกษา
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/5">
+                <th scope="col" className="px-6 py-3 w-2/12">
                   ชื่อ
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/5">
+                <th scope="col" className="px-6 py-3 w-2/12">
                   นามสกุล
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/5">
+                <th scope="col" className="px-6 py-3 w-2/12">
                   หมู่เรียน
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/5">
-                  ดูเพิ่มเติม
+                <th scope="col" className="px-6 py-3 w-2/12">
+                  รายละเอียด
                 </th>
+              
               </tr>
             </thead>
-            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{height:'50vh'}}>
-              {visibleItems.map((item) => (
-                <tr key={item.username} className="border-b-2 flex w-full ">
-               
-                  <td scope="col" className="px-6 py-3 w-1/5">
-                    {item.username}
+            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between">
+              {visibleItems.map((item, index) => (
+                <tr key={index} className="border-b-2 flex w-full items-center">
+                  <td scope="col" className="px-6 py-3 w-4/12">{item.std_ID}</td>
+                  <td scope="col" className="px-6 py-3 w-2/12">{item.std_fname}</td>
+                  <td scope="col" className="px-6 py-3 w-2/12">{item.std_lname}</td>
+                  <td scope="col" className="px-6 py-3 w-2/12">{item.sec_name}</td>
+                  <td scope="col" className="px-6 py-3 w-2/12">
+                    <button className=" hover:text-teal-700 px-2 py-1  ">
+                      เพิ่มเติม
+                    </button>
                   </td>
-                  <td scope="col" className="px-6 py-3 w-1/5">
-                    {item.fname}
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-1/5">
-                    {item.lname}
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-1/5">
-                    {item.section}
-                  </td>
-                  <td scope="col" className="px-6 py-3 w-1/5">
-                    เพิ่มเติม
-                  </td>
+                  {/* <td scope="col" className="px-6 py-3 w-2/12">{item.std_email}</td>
+                  <td scope="col" className="px-6 py-3 w-2/12">{item.std_mobile}</td>
+                  <td scope="col" className="px-6 py-3 w-2/12">
+                    {
+                      item.std_address + " ต." +
+                      item.subdistrict + " อ." +
+                      item.district + " จ." +
+                      item.province + " รหัสไปรษณีย์ " +
+                      item.zipcode}
+                  </td> */}
                 </tr>
               ))}
             </tbody>

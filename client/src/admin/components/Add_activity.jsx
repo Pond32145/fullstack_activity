@@ -1,84 +1,48 @@
 import { useState } from 'react';
-import { SHA256 } from 'crypto-js';
 import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 
 function Add_Activity({ closeModal }) {
-  const [inputText, setInputText] = useState('');
-  const [inputAmount, setInputAmount] = useState(1);
-  const [hashedText, setHashedText] = useState('');
+  const [inputTitle, setInputTitle] = useState('');
+  const [inputDesc, setInputDesc] = useState('');
+  const [inputNumStd, setInputNumStd] = useState(1);
   const [inputLocation, setInputLocation] = useState('');
   const [inputStartDate, setStartDate] = useState('');
   const [inputEndDate, setEndDate] = useState('');
 
-  const handleInputChange = (event) => {
-    setInputText(event.target.value);
+  const handleTitle = (event) => {
+    setInputTitle(event.target.value);
+  };
+  const handleDesc = (event) => {
+    setInputDesc(event.target.value);
   };
 
-  const handleAmountChange = (event) => {
-    setInputAmount(event.target.value);
+  const handleNumStd = (event) => {
+    setInputNumStd(event.target.value);
   };
   const handleLocation = (event) => {
     setInputLocation(event.target.value);
   };
 
-  const StartDate = (event) => {
+  const handleStartDate = (event) => {
     setStartDate(event.target.value);
   };
 
-  const EndDate = (event) => {
+  const handleEndDate = (event) => {
     setEndDate(event.target.value);
   };
 
-  const handleHashClick = () => {
-    let allHashes = '';
-
-    for (let i = 1; i <= inputAmount; i++) {
-      const uniqueInput = inputText + i;
-      const hashedValue = SHA256(uniqueInput).toString();
-      const upperActivtyCode = hashedValue.slice(-8).toUpperCase();
-
-      const CodeData = {
-        actName: inputText,
-        actCode: upperActivtyCode,
-        amount: inputAmount
-      };
-
-      fetch('http://localhost:3333/actcode', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(CodeData)
-      })
-        .then(response => response.json())
-        .then(result => {
-          Swal.fire({
-            icon: 'success',
-            title: 'เพิ่มข้อมูลสำเร็จ!',
-            showConfirmButton: false,
-            timer: 3500
-          });
-          console.log(result); 
-          closeModal();
-          setTimeout(() => {
-            window.location.reload(); // รีเฟรชหน้าจอ
-          }, 1500); // ล่าช้าการรีเฟรชให้เกิดชั่วโมง 2 วินาที
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-
-      allHashes += upperActivtyCode + '\n';
-    }
+  const handleSubmit = () => {
 
     const activity = {
-      actName: inputText,
-      amount: inputAmount,
-      location: inputLocation,
-      startDate: inputStartDate,
-      endDate: inputEndDate
+      Act_Title: inputTitle,
+      Act_Desc: inputDesc,
+      Act_DateStart: inputStartDate,
+      Act_DateEnd: inputEndDate,
+      Act_NumStd: inputNumStd,
+      Act_Location: inputLocation,
+      
     };
 
     fetch('http://localhost:3333/activity', {
@@ -96,7 +60,7 @@ function Add_Activity({ closeModal }) {
         console.error('Error:', error);
       });
 
-    setHashedText(allHashes);
+    
   };
 
   // const showSweetAlert = () => {
@@ -116,21 +80,33 @@ function Add_Activity({ closeModal }) {
         <CloseIcon />
       </div>
       <h1 className='text-xl font-bold text-center mb-5'>เพิ่มข้อมูลกิจกรรม</h1>
+
       <div className='flex items-center '>
         <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">ชื่อกิจกรรม :</label>
         <input
           type="text"
-          value={inputText}
-          onChange={handleInputChange}
+          value={inputTitle}
+          onChange={handleTitle}
           className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
         />
       </div>
+      
+      <div className='flex items-center '>
+        <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">รายละเอียดกิจกรรม :</label>
+        <input
+          type="text"
+          value={inputDesc}
+          onChange={handleDesc}
+          className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
+        />
+      </div>
+
       <div className='flex items-center'>
         <label className="block mb-2 text-lg text-gray-600 w-1/4 text-left pb-2">จำนวน :</label>
         <input
-          type="text"
-          value={inputAmount}
-          onChange={handleAmountChange}
+          type="number"
+          value={inputNumStd}
+          onChange={handleNumStd}
           className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
         />
       </div>
@@ -150,7 +126,7 @@ function Add_Activity({ closeModal }) {
         <input
           type="datetime-local"
           value={inputStartDate}
-          onChange={StartDate}
+          onChange={handleStartDate}
           className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
         />
       </div>
@@ -160,29 +136,18 @@ function Add_Activity({ closeModal }) {
         <input
           type="datetime-local"
           value={inputEndDate}
-          onChange={EndDate}
+          onChange={handleEndDate}
           className="border border-gray-300 rounded-md p-1 mb-4 w-3/4"
         />
       </div>
 
 
       <button
-        onClick={handleHashClick}
+        onClick={handleSubmit}
         className="bg-blue-500 ml-32 my-2  text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
       >
         เพิ่มข้อมูลกิจกรรม
       </button>
-
-
-      {hashedText && (
-        <div className="mt-4">
-          {/* <p className="text-sm text-gray-600">All Hashed Texts:</p> */}
-          {/* <pre className="font-mono text-sm whitespace-pre-line">{hashedText}</pre> */}
-
-          {/* เพิ่ม SweetAlert ตรงนี้ */}
-          {/* <button onClick={showSweetAlert}>Show SweetAlert</button> */}
-        </div>
-      )}
 
     </div>
   );

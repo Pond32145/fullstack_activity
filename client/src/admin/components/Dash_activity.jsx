@@ -17,7 +17,7 @@ function Dash_users() {
       .then(
         (result) => {
           setIsLoaded(true);
-          const filteredItems = result.filter((item) => item.act_Name);
+          const filteredItems = result.filter((item) => item.act_title);
           const countActivity = filteredItems.length;
           setCountActivity(countActivity);
           setItems(result);

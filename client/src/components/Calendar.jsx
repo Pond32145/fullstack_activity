@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CloseIcon from '@mui/icons-material/Close';
+import Swal from 'sweetalert2';
 
 const localizer = momentLocalizer(moment);
 
@@ -10,6 +11,7 @@ function CalendarFull() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [studentID, setstudentID] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:3333/api/activity')
@@ -21,19 +23,65 @@ function CalendarFull() {
       })
       .then(data => {
         const eventList = data.map((item, index) => ({
-          start: moment(item.start_Date).toDate(),
-          end: moment(item.end_Date).toDate(),
-          title: item.act_Name,
-          location: item.location,
+          start: moment(item.act_dateStart).toDate(),
+          end: moment(item.act_dateEnd).toDate(),
+          title: item.act_title,
+          location: item.act_location,
+          id: item.act_ID,
           color: index % 3 === 0 ? 'blue' : index % 3 === 1 ? 'green' : 'red',
         }));
-
         setEvents(eventList);
+
       })
       .catch(error => {
         console.error('เกิดข้อผิดพลาด: ', error);
       });
+
+      const student_ID = localStorage.getItem('userParams')
+      setstudentID(student_ID);
+
   }, []);
+
+  const reservActivity = () => {
+    const manageData = {
+      man_status: 1,
+      std_ID: studentID,
+      act_ID: selectedEvent.id
+    }
+
+    fetch('http://localhost:3333/reserve', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(manageData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data)
+        if (data.status === 'ok') {
+          Swal.fire({
+            icon: 'success',
+            title: 'จองเข้าร่วมกิจกรรมสำเร็จ!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          setTimeout(() => {
+            window.location.reload(); // รีเฟรชหน้าจอ
+          }, 2000); // ล่าช้าการรีเฟรชให้เกิดชั่วโมง 2 วินาที
+        } else {
+          console.log("error", data);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     const backgroundColor = event.color;
@@ -86,7 +134,7 @@ function CalendarFull() {
             <p>เริ่มวันที่ : {selectedEvent.start.toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" })}</p>
             <p>สิ้นสุดวันที่ : {selectedEvent.end.toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" })}</p>
             <div className="text-end">
-            <button className="btn px-2 py-1 bg-green-600 mt-4 text-center rounded-sm text-white">
+            <button className="btn px-2 py-1 bg-green-600 mt-4 text-center rounded-sm text-white" onClick={reservActivity}>
               จองกิจกรรม
             </button>
             </div>

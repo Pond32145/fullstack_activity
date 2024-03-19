@@ -2,17 +2,17 @@
     {
         "inputs": [
             {
-                "internalType": "string[]",
-                "name": "_activity",
-                "type": "string[]"
+                "internalType": "uint256",
+                "name": "_actID",
+                "type": "uint256"
             },
             {
-                "internalType": "uint32[]",
-                "name": "_studentID",
-                "type": "uint32[]"
+                "internalType": "string[]",
+                "name": "_stdID",
+                "type": "string[]"
             }
         ],
-        "name": "addActivity",
+        "name": "add",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -20,68 +20,35 @@
     {
         "inputs": [
             {
-                "internalType": "address",
-                "name": "_admin",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "_actID",
+                "type": "uint256"
             }
         ],
-        "name": "addAdmin",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "_activity",
-                "type": "string"
-            }
-        ],
-        "name": "getActivity",
-        "outputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint32",
-                        "name": "studentID",
-                        "type": "uint32"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "status",
-                        "type": "bool"
-                    }
-                ],
-                "internalType": "struct Activity.activityinfo[]",
-                "name": "Join",
-                "type": "tuple[]"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getAdmin",
-        "outputs": [
-            {
-                "internalType": "address[]",
-                "name": "Admin",
-                "type": "address[]"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getAllActivity",
+        "name": "get",
         "outputs": [
             {
                 "internalType": "string[]",
-                "name": "Activity",
+                "name": "",
                 "type": "string[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAll",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "string[][]",
+                "name": "",
+                "type": "string[][]"
             }
         ],
         "stateMutability": "view",

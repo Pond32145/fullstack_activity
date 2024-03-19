@@ -1,14 +1,18 @@
 import React from 'react'
 import ConnectWeb3 from '../components/ConnectWeb3'
 import AddActivity from '../components/addActivityBlock'
+import AddActyivity from '../components/Add_activity'
+import ToContract from '../components/ToContract'
+import Bt from '../contract/bt'
 
 function Wallet() {
     return (
-        <div className='flex justify-center h-screen'>
-            <div className='md:w-3/4 mx-5 md:p-5 h-2/4 bg-slate-200 shadow-lg rounded-lg'>
-                <ConnectWeb3 />
+        <div>
+                {/* <ConnectWeb3 /> */}
                 {/* <AddActivity /> */}
-            </div>
+                {/* <AddActyivity /> */}
+                {<ToContract />}
+                {/* {<Bt />} */}
         </div>
 
     )

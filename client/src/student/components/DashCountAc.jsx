@@ -1,28 +1,32 @@
 import { useState, useEffect } from 'react'
-
-import Popup from './Popup_addAc';
-
 function Dash_users() {
-  // const [items, setItems] = useState([]);
-  // const [isLoaded, setIsLoaded] = useState(false);
-  // const [error, setError] = useState(null);
-  // const [countActivity, setCountActivity] = useState(0);
-  // const [countVolunteer, setCountVolunteer] = useState(0);
+  const [activity, setActivity] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
+  const [countActivity, setCountActivity] = useState(0);
 
+  useEffect(() => {
+    fetch("http://localhost:3333/getActivity")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setActivity(result);
+
+          setCountActivity(result.length); 
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      );
+  }, []);
 
 
   return (
     <div className='container mx-auto px-10 md:px-20 mb-5'>
       <div>
-
-
         <div>
-
-          <div className='flex justify-between items-center'>
-            <h2 className='text-xl font-bold'>การจัดการผู้ใช้งาน</h2>
-            <Popup />
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pr-2 pl-2 pt-3">
             <div className="bg-blue-500 p-4 text-white h-28 rounded-md shadow-lg flex flex-col justify-center items-center transition-all hover:bg-blue-600">
               <div className='text-2xl flex items-center gap-2'>
@@ -32,10 +36,10 @@ function Dash_users() {
 
                 <div className='text-sm font-semibold'>จำนวนกิจกรรมทั้งหมด</div>
               </div>
-              <div className='text-center text-4xl font-bold'>EX</div>
+              <div className='text-center text-4xl font-bold'>{countActivity}</div>
             </div>
 
-            <div className="bg-green-500 p-4 text-white h-28 rounded-md shadow-lg flex flex-col justify-center items-center transition-all hover:bg-green-600">
+            {/* <div className="bg-green-500 p-4 text-white h-28 rounded-md shadow-lg flex flex-col justify-center items-center transition-all hover:bg-green-600">
               <p className='text-sm font-semibold'>จำนวนกิจกรรมของสาขา</p>
               <div className='text-center text-4xl font-bold'>EX</div>
             </div>
@@ -43,7 +47,7 @@ function Dash_users() {
             <div className="bg-green-500 p-4 text-white h-28 rounded-md shadow-lg flex flex-col justify-center items-center transition-all hover:bg-green-600">
               <p className='text-sm font-semibold'>จำนวนกิจกรรมจิตอาสา</p>
               <div className='text-center text-4xl font-bold'>EX</div>
-            </div>
+            </div> */}
 
 
           </div>

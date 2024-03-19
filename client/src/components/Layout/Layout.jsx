@@ -7,7 +7,7 @@ function Layout() {
     return (
         <div>
             <Header />
-            <div className='mt-28'>
+            <div className='pt-20'>
                 <Outlet />
             </div>
             <Footer />

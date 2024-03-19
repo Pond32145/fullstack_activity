@@ -3,20 +3,18 @@ import { useState, useEffect } from "react";
 const ProductTable = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [items, setItems] = useState([]);
+    const [activity, setActivity] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [itemsPerPage, setItemsPerPage] = useState(15); // จำนวนรายการต่อหน้า
     const [currentPage, setCurrentPage] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:3333/api/user")
+        fetch("http://localhost:3333/getActivity")
             .then((res) => res.json())
             .then(
                 (result) => {
                     setIsLoaded(true);
-                    // กรองข้อมูลที่มี role เป็น "student" เท่านั้น
-                    const filteredItems = result.filter((item) => item.role === "student");
-                    setItems(filteredItems);
+                    setActivity(result);
                 },
                 (error) => {
                     setIsLoaded(true);
@@ -30,12 +28,9 @@ const ProductTable = () => {
         setCurrentPage(0); // ตั้งค่าหน้าปัจจุบันเป็น 0 เมื่อมีการค้นหา
     };
 
-    const filteredItems = items.filter((item) => {
+    const filteredItems = activity.filter((item) => {
         return (
-            item.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.fname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.lname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.section.toLowerCase().includes(searchTerm.toLowerCase())
+            item.act_title.toLowerCase().includes(searchTerm.toLowerCase()) 
         );
     });
 
@@ -79,7 +74,7 @@ const ProductTable = () => {
                                     type="text"
                                     id="table-search"
                                     className="pb-2 block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Search for student"
+                                    placeholder="Search for activity"
                                     value={searchTerm}
                                     onChange={handleSearch}
                                 />
@@ -110,9 +105,9 @@ const ProductTable = () => {
                             <tr className="flex w-full">
 
                                 <th scope="col" className="px-6 py-3 w-1/6">
-                                    No.
+                                    รหัสกิจกรรม
                                 </th>
-                                <th scope="col" className="px-6 py-3 w-2/6">
+                                <th scope="col" className="px-6 py-3 w-1/6">
                                     ชื่อกิจกรรม
                                 </th>
                                 <th scope="col" className="px-6 py-3 w-1/6">
@@ -122,30 +117,35 @@ const ProductTable = () => {
                                     วันที่จัดกิจกรรม
                                 </th>
                                 <th scope="col" className="px-6 py-3 w-1/6">
-                                    รหัสบัตรกิจกรรม
+                                    สถานะการเข้าร่วม
+                                </th>
+                                <th scope="col" className="px-6 py-3 w-1/6">
+                                    รายละเอียด
                                 </th>
                             </tr>
                         </thead>
                         <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{ height: '50vh' }}>
                             {visibleItems.map((item) => (
-                                <tr key={item.username} className="border-b-2 flex w-full ">
+                                <tr key={item.act_ID} className="border-b-2 flex w-full ">
                                  
-                                    <td scope="col" className="px-6 py-3 w-1/6">
-                                        Example
-                                    </td>
-                                    <td scope="col" className="px-6 py-3 w-2/6">
-                                        Example
+                                    <td scope="col" className="px-6 py-3 w-1/6 ">
+                                        {item.act_ID}
                                     </td>
                                     <td scope="col" className="px-6 py-3 w-1/6">
-                                        Example
+                                        {item.act_title}
                                     </td>
                                     <td scope="col" className="px-6 py-3 w-1/6">
-                                        Example
+                                        {item.act_location}
                                     </td>
                                     <td scope="col" className="px-6 py-3 w-1/6">
-                                        Example
+                                        {item.act_dateStart.slice(0, 10)}
                                     </td>
-
+                                    <td scope="col" className="px-6 py-3 w-1/6">
+                                        error
+                                    </td>
+                                    <td scope="col" className="px-6 py-3 w-1/6">
+                                        เพิ่มเติม
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

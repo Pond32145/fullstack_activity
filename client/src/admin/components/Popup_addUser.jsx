@@ -8,6 +8,9 @@ class Popup extends Component {
         this.state = {
             visible: false
         }
+        // Bind methods to the class instance
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     openModal() {
@@ -25,7 +28,7 @@ class Popup extends Component {
     render() {
         return (
             <div>
-                <button onClick={() => this.openModal()}>
+                <button onClick={this.openModal}>
                     <div className='flex gap-2 hover:text-black hover:bg-gray-200 p-2 rounded text-gray-500 text-sm items-center'>
                         เพิ่มผู้ใช้งานระบบ
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -33,9 +36,9 @@ class Popup extends Component {
                         </svg>
                     </div>
                 </button>
-                <Modal visible={this.state.visible} width="480" height="230" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <Modal visible={this.state.visible} width="480" height="230" effect="fadeInUp" onClickAway={this.closeModal}>
                     <div className="-mt-40">
-                        <Add_Users closeModal={() => this.closeModal()} />
+                        <Add_Users closeModal={this.closeModal} /> {/* Pass closeModal directly */}
                     </div>
                 </Modal>
             </div>
