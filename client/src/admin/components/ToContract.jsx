@@ -57,7 +57,7 @@ function ToContract() {
                             <p className="text-gray-600">Number of Students: {count}</p>
                         </div>
                         <div className="w-3/4">
-                            <table className="min-w-full table-auto">
+                            <table className="min-w-full table-auto text-center">
                                 <thead>
                                     <tr className="bg-gray-200">
                                         <th className="px-4 py-2">Confirm</th>
@@ -89,16 +89,17 @@ function ToContract() {
                                         );
                                     })}
                                 </tbody>
-                            </table>
-                        </div>
-                    </div>
-                );
-            })}
-            <div className="flex justify-center mt-16">
-                <button type="submit" className="px-6 py-3 bg-indigo-600 text-white rounded hover:bg-indigo-700">
-                    Submit
-                </button>
-            </div>
+                                </table>
+                                
+                                </div>
+                                </div>
+                                );
+                            })}
+                            <div className="flex justify-center items-center mt-16 ">
+                                <button type="submit" className="px-6 py-3 bg-indigo-600 text-white rounded hover:bg-indigo-700">
+                                    Submit
+                                </button>
+                            </div>
         </div>
     </div>
     );
