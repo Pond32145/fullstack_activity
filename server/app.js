@@ -23,18 +23,11 @@ app.use(cors())
 const mysql = require('mysql2');
 // create the connection to database
 const connect = mysql.createConnection({
-    host: 'b85dyakftcigpk6daezs-mysql.services.clever-cloud.com',
-    user: 'uxbflralnjtel8t7',
-    password: 'VNOEtO9c2GYJJMbuzjsx',
-    database: 'b85dyakftcigpk6daezs',
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'activitydb',
 });
-
-// const connect = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '',
-//     database: 'activitydb',
-// });
 
 
 
@@ -69,7 +62,8 @@ app.post('/login', jsonParser, function (req, res, next) {
                         status: 'ok',
                         message: 'Login Success',
                         token,
-                        role: user[0].role, // ส่งบทบาทในการตอบกลับ
+                        role: user[0].role,
+                        login_ID: user[0].login_ID // ส่งบทบาทในการตอบกลับ
                     });
                 } else {
                     res.json({
@@ -215,15 +209,40 @@ app.patch('/api/update/:id', jsonParser, (req, res) => {
         });
 });
 
+app.patch('/api/updateStaff/:id', jsonParser, (req, res) => {
+    const {
+        id
+    } = req.params;
+    const {
+        fname,
+        lname,
+        email,
+        mobile,
+        address,
+        province,
+        district,
+        subdistrict,
+        zipcode
+    } = req.body;
+
+    connect.execute('UPDATE `staff` SET `staff_fname`= ?,`staff_lname`= ?,`staff_email`= ?,`staff_mobile`= ?,`staff_address`= ?,`province`= ?,`district`= ?,`subdistrict`= ?,`zipcode`= ? WHERE staff_ID = ?',
+        [fname, lname, email, mobile, address, province, district, subdistrict, zipcode, id],
+        (err, result) => {
+            if (err) {
+                console.error('Error querying MySQL:', err);
+                res.status(500).send('Internal Server Error: ' + err.message); // Send error details to the client
+                return;
+            } else {
+                res.json(result);
+                console.log('Update successfully');
+            }
+        });
+});
 
 
-
-
-
-
-app.get('/api/userO', (req, res) => {
+app.get('/api/student', (req, res) => {
     const {id} = req.query;
-    const query = 'SELECT * FROM student WHERE login_ID = ?';
+    const query = 'SELECT student.*, section.sec_Name FROM student JOIN section ON student.sec_ID = section.sec_ID WHERE login_ID = ?';
 
     connect.query(query, [id], (err, results) => {
         if (err) {
@@ -247,6 +266,18 @@ app.get('/api/userO', (req, res) => {
 
     console.query
 });
+
+app.get('getSection', (req, res) => {
+    connect.query('SELECT * FROM section', (err, results) => {
+        if (err) {
+            console.error('Error fetching user data:', err);
+            res.status(500).json({
+                error: 'Internal Server Error'
+            });
+            return;
+        }
+    })
+})
 
 app.get('/api/staff', (req, res) => {
     const {id} = req.query;
@@ -279,27 +310,8 @@ app.get('/api/staff', (req, res) => {
 
 app.post('/activity', jsonParser, function (req, res) {
     connect.query(
-        'INSERT INTO activity(`act_title`, `act_desc`, `act_dateStart`, `act_dateEnd`, `act_numStd`, `act_location`, `staff_ID`, `act_status`, `act_createAt`) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)',
+        'INSERT INTO activity(`act_title`, `act_desc`, `act_dateStart`, `act_dateEnd`, `act_numStd`, `act_location`, `staff_ID`, `act_status`, `act_createAt`) VALUES (?, ?, ?, ?, ?, ?, ?, 1 , ?)',
         [req.body.act_title, req.body.act_desc, req.body.act_dateStart, req.body.act_dateEnd, req.body.act_numStd, req.body.act_location, req.body.staff_ID,1 , new Date()],
-        function (err, results) {
-            if (err) {
-                console.error('Error inserting into database:', err);
-                res.status(500).json({
-                    error: 'Internal Server Error'
-                });
-            } else {
-                res.json(results);
-            }
-        }
-    );
-});
-
-
-
-
-app.post('/actcode', jsonParser, function (req, res) {
-    connect.query('INSERT INTO actcode(`act_Code`, `act_Name`) VALUES (?,?)',
-        [req.body.actCode, req.body.actName],
         function (err, results) {
             if (err) {
                 console.error('Error inserting into database:', err);

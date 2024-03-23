@@ -4,7 +4,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Link } from "react-router-dom";
 
 const StudentForm = () => {
-  
+
   const [provinces, setProvinces] = useState([]);
   const [amphures, setAmphures] = useState([]);
   const [tambons, setTambons] = useState([]);
@@ -39,13 +39,13 @@ const StudentForm = () => {
       setChilds.forEach((setChild) => setChild([]));
       const entries = childsId.map((child) => [child, undefined]);
       const unSelectChilds = Object.fromEntries(entries);
-  
+
       const input = event.target.value;
       const dependId = input ? Number(input) : undefined;
       setSelected((prev) => ({ ...prev, ...unSelectChilds, [id]: dependId }));
-  
+
       if (!input) return;
-  
+
       if (child) {
         const parent = list.find((item) => item.id === dependId);
         if (parent) {
@@ -54,35 +54,36 @@ const StudentForm = () => {
           setChild(childs);
         }
       }
-  
+
       const selectedValue = list.find((item) => item.id === dependId)?.name_th || '';
       onChangeHandle(id, selectedValue);
     };
-  
+
     return (
       <>
         <select value={selected[id]} onChange={onChangeHandleLocal} className="mt-1 p-2 border w-full rounded-md">
           <option key={selected[id]} value={selected[id]} label={addressValue_PDS} />
-  
+
           {list && list.map((item) => (
-              <option
-                key={item.id}
-                value={item.id}
-                label={item.name_th}
-              >
-                {item.name_th}
-              </option>
-            ))}
+            <option
+              key={item.id}
+              value={item.id}
+              label={item.name_th}
+            >
+              {item.name_th}
+            </option>
+          ))}
         </select>
       </>
     );
   };
-  
-  
+
+
   const [username, setUsername] = useState('');
   const [fnameValue, setFnameValue] = useState();
   const [lnameValue, setLnameValue] = useState('');
-  const [sectionValue, setSectionValue] = useState('');
+  const [sectionIDValue, setSectionIDValue] = useState('');
+  const [sectionNameValue, setSectionNameValue] = useState('');
   const [mobileValue, setMobileValue] = useState('');
   const [emailValue, setEmailValue] = useState('');
   const [addressValue, setAddressValue] = useState('');
@@ -90,15 +91,16 @@ const StudentForm = () => {
   const [districtsValue, setDistrictValue] = useState('');
   const [subdistrictsValue, setSubdistrictValue] = useState('');
   const [zipcodeValue, setZipcodeValue] = useState('');
+  const [sectionSelect, setSectionSelect] = useState('')
 
-  const userParams = localStorage.getItem('userParams');
+  const loginID = localStorage.getItem('login_ID');
 
   useEffect(() => {
     // กำหนด URL ของ API ที่สร้างด้วย Node.js
-    const apiUrl = 'http://localhost:3333/api/userO?id=';  // ปรับ URL ตามที่คุณใช้
+    const apiUrl = 'http://localhost:3333/api/student?id=';  // ปรับ URL ตามที่คุณใช้
 
     // ทำ HTTP request ด้วย fetch 
-    fetch(apiUrl + userParams)
+    fetch(apiUrl + loginID)
       .then(response => {
         if (!response.ok) {
           throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
@@ -110,7 +112,8 @@ const StudentForm = () => {
         setUsername(data.login_ID)
         setFnameValue(data.std_fname);
         setLnameValue(data.std_lname);
-        setSectionValue(data.sec_ID);
+        setSectionIDValue(data.sec_ID);
+        setSectionNameValue(data.sec_Name)
         setMobileValue(data.std_mobile);
         setEmailValue(data.std_email);
         setAddressValue(data.std_address);
@@ -124,34 +127,41 @@ const StudentForm = () => {
       });
 
 
-      fetch(
-        "https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province_with_amphure_tambon.json"
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          // Sort the provinces alphabetically by name_th
-          const sortedProvinces = result.sort((a, b) =>
-            a.name_th.localeCompare(b.name_th)
+    fetch(
+      "https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province_with_amphure_tambon.json"
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        // Sort the provinces alphabetically by name_th
+        const sortedProvinces = result.sort((a, b) =>
+          a.name_th.localeCompare(b.name_th)
 
-          );
+        );
 
-          const idProvince = sortedProvinces.map(province => [province.id, province.name_th]);
+        const idProvince = sortedProvinces.map(province => [province.id, province.name_th]);
 
-          console.log(idProvince);
-
-
-          
-
-          console.log(sortedProvinces);
-          setProvinces(sortedProvinces);
-        });
+        console.log(idProvince);
 
 
 
 
-      
+        console.log(sortedProvinces);
+        setProvinces(sortedProvinces);
+      });
 
-  }, [userParams]);
+    fetch('http://localhost:3333/getSection')
+      .then((respose) => respose.json())
+      .then((result) => {
+        console.log(result)
+        setSectionSelect(result)
+      })
+
+
+
+
+
+
+  }, [loginID]);
 
 
 
@@ -183,11 +193,11 @@ const StudentForm = () => {
 
   const updateClick = (event) => {
     event.preventDefault();
-  
+
     const dataJson = {
       fname: fnameValue,
       lname: lnameValue,
-      section: sectionValue,
+      section: sectionIDValue,
       mobile: mobileValue,
       email: emailValue,
       address: addressValue,
@@ -196,43 +206,42 @@ const StudentForm = () => {
       subdistrict: subdistrictsValue,
       zipcode: zipcode,
     };
-  
-    fetch('http://localhost:3333/api/update/' + userParams, {
+
+    fetch('http://localhost:3333/api/update/' + loginID, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(dataJson),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-   })
-   .then(result => {
-      console.log(result);
-      Swal.fire({
-        title: 'Update Successfully',
-        icon: 'success',
-        confirmButtonText: 'OK',
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(result => {
+        console.log(result);
+        Swal.fire({
+          title: 'แก้ไขประวัติส่วนตัวเสร็จสิ้น',
+          icon: 'success',
+        });
+        setTimeout(() => {
+          window.location = '/activity/calendar';
+        }, 1500);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+          title: 'Oops...something went wrong!',
+          icon: 'error',
+          text: `Error occurred! ${error.message}`,
+          confirmButtonText: 'OK',
+        });
       });
-      setTimeout(() => {
-        window.location = '/activity/dashboard';
-      }, 1500);
-   })
-   .catch(error => {
-      console.error('Error:', error);
-      Swal.fire({
-        title: 'Oops...something went wrong!',
-        icon: 'error',
-        text: `Error occurred! ${error.message}`,
-        confirmButtonText: 'OK',
-      });
-   });
-   
+
   };
-  
+
 
   if (!username) {
     return <div>Loading...</div>;
@@ -262,12 +271,22 @@ const StudentForm = () => {
           <label htmlFor="classGroup" className="block text-sm font-medium text-gray-600">
             หมู่เรียน
           </label>
+          {/* {sectionSelect && sectionSelect.length > 0 && (
+            <select name="section" id="section" value={sectionNameValue} className="mt-1 p-2 border w-full rounded-md">
+              <option>{sectionNameValue}</option>
+              {sectionSelect.map((item) => (
+                <option key={item.sec_ID} value={item.sec_ID} label={item.sec_Name}>{item.sec_Name}</option>
+              ))}
+            </select>
+          )} */}
+
+
           <input
             type="text"
             id="section"
             name="section"
             onChange={updateSection}
-            value={sectionValue}
+            value={sectionNameValue}
             className="mt-1 p-2 border w-full rounded-md" />
         </div>
 
@@ -390,7 +409,7 @@ const StudentForm = () => {
             value={zipcode ?? zipcodeValue}
             className="mt-1 p-2 border w-full rounded-md" />
         </div>
-        
+
         <div className="flex justify-end items-center">
           <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 w-1/8 h-1/2" onClick={updateClick}>
             แก้ไข
